@@ -1,0 +1,9 @@
+# Ignore virtual environments
+venv/
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+# Ignore Poetry files
+*.egg-info/
+# Ignore any other unnecessary files
+*.log
