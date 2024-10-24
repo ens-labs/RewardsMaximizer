@@ -38,7 +38,7 @@ def create_database():
         description TEXT NOT NULL,
         created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (company_id) REFERENCES companies(company_id)
+        FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
     ''')
 
@@ -51,7 +51,7 @@ def create_database():
         type TEXT NOT NULL,
         created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (company_id) REFERENCES companies(company_id)
+        FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
     ''')
 
@@ -64,8 +64,8 @@ def create_database():
         added DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         expires_on DATETIME NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES users(user_id),
-        FOREIGN KEY (card_id) REFERENCES cards(card_id)
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (card_id) REFERENCES cards(card_id) ON DELETE CASCADE
     )
     ''')
 
@@ -79,8 +79,8 @@ def create_database():
         added DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         expires_on DATETIME NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES users(user_id),
-        FOREIGN KEY (reward_id) REFERENCES rewards(reward_id)
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (reward_id) REFERENCES rewards(reward_id) ON DELETE CASCADE
     )
     ''')
 
@@ -94,8 +94,8 @@ def create_database():
         comments TEXT NOT NULL,
         created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(user_id),
-        FOREIGN KEY (company_id) REFERENCES companies(company_id)
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
     ''')
 
@@ -110,7 +110,7 @@ def create_database():
         valid_to DATE NOT NULL,
         created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (company_id) REFERENCES companies(company_id)
+        FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
     ''')
 
@@ -123,7 +123,7 @@ def create_database():
         type TEXT NOT NULL,
         created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
     )
     ''')
 
@@ -136,9 +136,13 @@ def create_database():
         comment_info TEXT NOT NULL,
         created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
     )
     ''')
+
+    # Commit changes and close the connection
+    conn.commit()
+    conn.close()
 
 def save_rewards_to_db(rewards_data):
     conn = sqlite3.connect('rewards_maximizer.db')
