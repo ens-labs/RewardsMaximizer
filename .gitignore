@@ -1,0 +1,5 @@
+# ignore all files in target
+target/
+
+# ignore DS_Store files(mac users)
+*.DS_Store
