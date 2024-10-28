@@ -7,3 +7,4 @@ mod auth;
 mod protected;
 mod user;
 mod index;
+mod lib;

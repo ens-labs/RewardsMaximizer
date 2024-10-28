@@ -25,3 +25,5 @@ tower-sessions = { version = "0.13.0", default-features = false, features = [
 ] }
 tower-sessions-sqlx-store = { version = "0.14.0", features = ["sqlite"] }
 thiserror = "1.0.56"
+diesel = { version = "2.2.0", features = ["sqlite", "returning_clauses_for_sqlite_3_35"] }
+dotenvy = "0.15"
