@@ -7,3 +7,6 @@ __pycache__/
 *.egg-info/
 # Ignore any other unnecessary files
 *.log
+
+#ignore DS_Store
+.DS_Store
