@@ -3,3 +3,6 @@ target/
 
 # ignore DS_Store files(mac users)
 *.DS_Store
+
+#cargo lock
+Cargo.lock

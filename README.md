@@ -14,6 +14,13 @@
 1. cargo install diesel_cli
 #### To run migration: diesel migration run
 
+### Generate database diagram
+1.  pip install eralchemy
+2.  pip install graphviz
+3.  brew install graphviz (if on MacOS) || sudo apt-get install graphviz (Ubuntu)
+4.  eralchemy -i sqlite:///database_NAME.db -o output_diagram_NAME.pdf
+
+
 ### Resources:
 1. https://doc.rust-lang.org/std/
 2. https://doc.rust-lang.org/reference/

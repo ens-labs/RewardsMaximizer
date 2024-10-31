@@ -8,3 +8,5 @@ mod protected;
 mod user;
 mod index;
 mod lib;
+mod models;
+mod schema;

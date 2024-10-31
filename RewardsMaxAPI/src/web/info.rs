@@ -3,7 +3,6 @@ use axum::{routing::get, response::IntoResponse, Router};
 
 //use crate::users::AuthSession;
 
-
 pub fn router() -> Router<()> {
     Router::new()
     .route("/contactUs", get(self::get::contact_us))
