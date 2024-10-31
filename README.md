@@ -2,7 +2,7 @@
 
 | Command           | Builds                   | Date/time      | 
 | :---------------- | :------:                 | :------:       |
-| cargo run         |   :heavy_check_mark:     | 27OCT24 @ 2219 | 
+| cargo run         |   :heavy_check_mark:     | 30OCT24 @ 2015 | 
 
 ## API section
 ### Running backend
