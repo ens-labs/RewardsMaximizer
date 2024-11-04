@@ -10,7 +10,7 @@ use time::Duration;
 use tokio:: { signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::SqliteStore;
-use crate::web::recommendations; // Import the recommendations module
+//use crate::web::recommendations; // Import the recommendations module
 
 
 use crate:: {
@@ -68,11 +68,11 @@ impl App {
             .merge(auth::router())
             .merge(user::router())
             .merge(index::router())
-            .route("/recommendations/:user_id", axum::routing::get(recommendations::get_recommendations))
+            // .route("/recommendations/:user_id", axum::routing::get(recommendations::get_recommendations))
             .layer(MessagesManagerLayer)
             .layer(auth_layer);
 
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap(); // localhost:3000
+        let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap(); // localhost:8000
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
