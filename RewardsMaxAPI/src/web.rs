@@ -10,3 +10,4 @@ mod index;
 mod lib;
 mod models;
 mod schema;
+mod recommendations;
