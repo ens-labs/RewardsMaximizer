@@ -62,7 +62,7 @@ Each scraping function:
 
 ## Viewing Database Data
 
-To view the data stored in the SQLite database, you can use the SQLite command line interface or any SQLite database viewer tool. Below are the steps for both methods:
+To view the data stored in the SQLite database, you can use the SQLite command line interface or any SQLite database viewer tool.
 
 ### Using SQLite Command Line Interface
 
