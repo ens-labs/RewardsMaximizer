@@ -72,7 +72,7 @@ impl App {
             .layer(MessagesManagerLayer)
             .layer(auth_layer);
 
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap(); // localhost:8000
+        let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); // localhost:8000
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
