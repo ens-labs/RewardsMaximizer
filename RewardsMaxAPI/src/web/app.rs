@@ -10,6 +10,8 @@ use time::Duration;
 use tokio:: { signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::SqliteStore;
+use crate::web::recommendations; // Import the recommendations module
+
 
 use crate:: {
     users::Backend,
@@ -66,6 +68,7 @@ impl App {
             .merge(auth::router())
             .merge(user::router())
             .merge(index::router())
+            .route("/recommendations/:user_id", axum::routing::get(recommendations::get_recommendations))
             .layer(MessagesManagerLayer)
             .layer(auth_layer);
 
