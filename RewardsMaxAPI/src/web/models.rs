@@ -4,7 +4,7 @@ use chrono::{NaiveDate, NaiveDateTime};
 use diesel::sql_types::Timestamp;
 use crate::web::schema;
 
-#[derive(Queryable, Serialize, Debug)]
+#[derive(Clone, Serialize, Deserialize, Queryable)]
 #[diesel(table_name = schema::users)]
 pub struct User {
     pub user_id: i32,
