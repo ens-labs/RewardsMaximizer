@@ -5,10 +5,13 @@
 | cargo run         |   :heavy_check_mark:     | 30OCT24 @ 2015 | 
 
 ## API section
-### Running backend
+### Running backend locally through cargo and not Docker
+0. Change this line in app.rs: let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); to let listener = tokio::net::TcpListener::bind("127.0.0.1:8080").await.unwrap();
 1. cargo run
-2. Visit [`localhost:3000`](http://localhost:4000)
+2. Visit [`localhost:8080`](http://localhost:8080)
 
+## When deploying backend to back4app
+0. Make sure this line in app.rs has quad 0's: let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); 
 
 ### Diesel
 1. cargo install diesel_cli

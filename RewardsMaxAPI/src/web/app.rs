@@ -72,6 +72,7 @@ impl App {
             .layer(MessagesManagerLayer)
             .layer(auth_layer);
 
+        // If running locally change to "127.0.0.1:8080"
         let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); // localhost:8000
 
         // Ensure we use a shutdown signal to abort the deletion task.
