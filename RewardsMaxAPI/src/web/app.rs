@@ -10,12 +10,15 @@ use time::Duration;
 use tokio:: { signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::SqliteStore;
+use diesel::prelude::*;
+use dotenvy::dotenv;
+use std::env;
 //use crate::web::recommendations; // Import the recommendations module
 
 
 use crate:: {
     users::Backend,
-    web::{auth, protected, user, index},
+    web::{auth, protected, user, index, companies, vendor_deals},
 };
 
 pub struct App {
@@ -68,6 +71,8 @@ impl App {
             .merge(auth::router())
             .merge(user::router())
             .merge(index::router())
+            .merge(companies::router())
+            .merge(vendor_deals::router())
             // .route("/recommendations/:user_id", axum::routing::get(recommendations::get_recommendations))
             .layer(MessagesManagerLayer)
             .layer(auth_layer);

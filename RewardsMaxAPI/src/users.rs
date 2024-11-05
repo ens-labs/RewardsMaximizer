@@ -78,6 +78,7 @@ impl AuthnBackend for Backend {
         &self,
         creds: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
+        
         let user: Option<Self::User> = sqlx::query_as("select * from users where username = ? ")
             .bind(creds.username)
             .fetch_optional(&self.db)

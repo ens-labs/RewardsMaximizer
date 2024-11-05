@@ -11,3 +11,5 @@ mod lib;
 mod models;
 mod schema;
 mod recommendations;
+mod companies;
+mod vendor_deals;

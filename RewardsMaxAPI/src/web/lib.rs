@@ -1,5 +1,5 @@
-// pub mod models;
-// pub mod schema;
+use crate::web::models;
+use crate::web::schema;
 
 use diesel::prelude::*;
 use dotenvy::dotenv;

@@ -1,19 +1,30 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 use chrono::{NaiveDate, NaiveDateTime};
-//use diesel::sql_types::Timestamp;
+use diesel::sql_types::Timestamp;
 use crate::web::schema;
 
 //Figure out insertable issues
-//#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
-#[derive(Queryable, Serialize, Deserialize, Debug)]
+//#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)] -> has issues with chrono
+#[derive(Queryable, Serialize, Debug)]
 #[diesel(table_name = schema::users)]
 pub struct User {
     pub user_id: i32,
-    pub created: chrono::NaiveDateTime,
+    //pub created: chrono::NaiveDateTime,
     pub email: String,
     pub password: String,
-    pub updated: chrono::NaiveDateTime,
+   // pub updated: chrono::NaiveDateTime,
+    pub username: String,
+}
+
+#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
+#[diesel(table_name = schema::users)]
+pub struct NewUser {
+    //pub user_id: i32,
+    //pub created: chrono::NaiveDateTime,
+    pub email: String,
+    pub password: String,
+   // pub updated: chrono::NaiveDateTime,
     pub username: String,
 }
 
@@ -41,16 +52,40 @@ pub struct Card {
     pub updated: chrono::NaiveDateTime,
 }
 
+#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
+#[diesel(table_name = schema::cards)]
+pub struct NewCard {
+    //pub card_id: i32,
+    pub company_id: i32,
+    //pub created: chrono::NaiveDateTime,
+    pub name: String,
+    pub r#type: String,
+    //pub updated: chrono::NaiveDateTime,
+}
 
-#[derive(Queryable, Selectable)]
+
+#[derive(QueryableByName, Serialize, Deserialize, Selectable)]
 #[diesel(table_name = schema::companies)]
 pub struct Company {
     pub company_id: i32,
+    pub name: String,
+    pub description: String,
+    pub website: String,
     pub contact_email: String,
     pub created: NaiveDateTime,
+    pub updated: NaiveDateTime,
+
+}
+
+#[derive(Queryable, Insertable, Serialize, Deserialize, Selectable)]
+#[diesel(table_name = schema::companies)]
+pub struct NewCompany {
+    //pub company_id: i32,
+    pub contact_email: String,
+    //pub created: NaiveDateTime,
     pub description: String,
     pub name: String,
-    pub updated: NaiveDateTime,
+    //pub updated: NaiveDateTime,
     pub website: String,
 }
 
@@ -86,8 +121,24 @@ pub struct VendorDeal {
     pub description: String,
     pub title: String,
     pub updated: NaiveDateTime,
-    pub valid_from: NaiveDate,
-    pub valid_to: NaiveDate,
+    pub valid_from: NaiveDateTime,
+    pub valid_to: NaiveDateTime,
+}
+
+
+#[derive(Queryable, Insertable, Selectable)]
+#[diesel(table_name = schema::vendor_deals)]
+pub struct NewVendorDeal {
+    //pub deal_id: i32,
+    pub company_id: i32,
+    //pub created: NaiveDateTime,
+    pub description: String,
+    pub title: String,
+    //pub updated: NaiveDateTime,
+    // #[diesel(sql_type = diesel::sql_types::Timestamp)]
+    // pub valid_from: NaiveDateTime,
+    // #[diesel(sql_type = diesel::sql_types::Timestamp)]
+    // pub valid_to: NaiveDateTime,
 }
 
 #[derive(Queryable, Selectable)]

@@ -1,4 +1,9 @@
-use axum::{routing::get, routing::post, Router};
+use axum::{routing::get, routing::post, Router, Json, response::IntoResponse};
+use serde::Deserialize;
+use diesel::{prelude::*, sqlite::SqliteConnection};
+use crate::web::models::{NewUser, NewCard};
+use crate::web::lib::establish_connection;
+
 
 //use crate::users::AuthSession;
 
@@ -7,6 +12,7 @@ use axum::{routing::get, routing::post, Router};
 
 pub fn router() -> Router<()> {
     Router::new()
+        .route("/signup", post(self::post::signup_user)) // Udpate and include auth session
         .route("/user/dashboard", get(self::get::dashboard)) //update
         .route("/user/cards", get(self::get::cards)) //update for logged-in user: /:user_id/cards
         .route("/user/addCard", get(self::get::add_card)) // update
@@ -36,10 +42,42 @@ mod get {
  }
 
 mod post {
-    //use super::*;
+    use super::*;
 
-    pub async fn add_card() -> &'static str {
-        "[post] Add card endpoint"
+    pub async fn signup_user(Json(new_user): Json<NewUser>) -> impl IntoResponse {
+        use crate::web::schema::users::dsl::*;
+
+        let mut connection = establish_connection();
+    
+        match diesel::insert_into(users)
+            .values(&new_user)
+            .execute(&mut connection)
+        {
+            Ok(_) => (axum::http::StatusCode::OK, "data inserted into the database").into_response(),
+            Err(e) => (
+                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Failed to insert data: {}", e),
+            )
+            .into_response(),
+        }
+    }
+
+    pub async fn add_card(Json(new_card): Json<NewCard>) -> impl IntoResponse {
+        use crate::web::schema::cards::dsl::*;
+
+        let mut connection = establish_connection();
+    
+        match diesel::insert_into(cards)
+            .values(&new_card)
+            .execute(&mut connection)
+        {
+            Ok(_) => (axum::http::StatusCode::OK, "data inserted into the database").into_response(),
+            Err(e) => (
+                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Failed to insert data: {}", e),
+            )
+            .into_response(),
+        }
     }
 
     pub async fn  delete_card() -> &'static str {

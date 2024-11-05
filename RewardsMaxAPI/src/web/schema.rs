@@ -13,13 +13,13 @@ diesel::table! {
 
 diesel::table! {
     companies (company_id) {
-        company_id -> Nullable<Integer>,
+        company_id -> Integer,
+        name -> Text,
+        description -> Text,
+        website -> Text,
         contact_email -> Text,
         created -> Timestamp,
-        description -> Text,
-        name -> Text,
         updated -> Timestamp,
-        website -> Text,
     }
 }
 

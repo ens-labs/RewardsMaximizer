@@ -1,5 +1,6 @@
 # ignore all files in target
 target/
+__pycache__/
 
 # ignore DS_Store files(mac users)
 *.DS_Store
