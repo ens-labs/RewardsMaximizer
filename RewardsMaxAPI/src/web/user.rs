@@ -3,12 +3,7 @@ use serde::Deserialize;
 use diesel::{prelude::*, sqlite::SqliteConnection};
 use crate::web::models::{NewUser, NewCard};
 use crate::web::lib::establish_connection;
-
-
 //use crate::users::AuthSession;
-
-// #[derive(Template)]
-// #[template(path = "cards.html")]
 
 pub fn router() -> Router<()> {
     Router::new()

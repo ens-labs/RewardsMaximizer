@@ -1,6 +1,6 @@
 use axum::{routing::get, routing::post, Router, Json, response::IntoResponse,  http::StatusCode};
 use serde::Deserialize;
-use diesel::{prelude::*};
+use diesel::{sql_query, prelude::*};
 use crate::web::models::{NewCompany, Company};
 use crate::web::lib::establish_connection;
 
@@ -18,17 +18,23 @@ mod get {
         "Add company endpoint"
     }
 
-    //Need to fix getting from DB
+    // Able to read from DB with straight SQL, plz leave it alone
+    // diesel -> NO BUENO, NO LIKE!
     pub async fn view_companies() -> impl IntoResponse {
-        // use crate::web::schema::companies::dsl::*;
-        // let mut connection = establish_connection();
+        use crate::web::schema::companies::dsl::*;
+        let mut connection = establish_connection();
 
-        // let results = companies
-        // .select(crate::web::models::Company::as_select())
-        //     .load::<Company>(&mut connection)
-        //     .expect("Error loading companies");
+        let results = sql_query("SELECT * FROM companies").load::<Company>(&mut connection); 
 
-        // Json(results)
+        match results {
+            Ok(results) => (StatusCode::OK, Json(results)).into_response(),
+            Err(e) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Failed to retrieve data: {}", e),
+            )
+            .into_response(),
+        }
+        
     }
  }
 
@@ -37,7 +43,6 @@ mod post {
 
     pub async fn add_company(Json(new_company): Json<NewCompany>) -> impl IntoResponse {
         use crate::web::schema::companies::dsl::*;
-
         let mut connection = establish_connection();
     
         match diesel::insert_into(companies)
