@@ -13,6 +13,10 @@
 ## When deploying backend to back4app
 0. Make sure this line in app.rs has quad 0's: let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); 
 
+## JSON Examples to POST to Backend to write to DB
+### There are a few examples of JSON's we can POST to the desired routes, they follow DB format
+### They are located in: RewardsMaxAPI/JSON Examples/
+
 ### Diesel
 1. cargo install diesel_cli
 #### To run migration: diesel migration run
