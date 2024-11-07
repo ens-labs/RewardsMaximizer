@@ -192,7 +192,7 @@ def scrape_mcdonalds():
 
 # Function to scrape rewards data from Dummy Site
 def scrape_dummy_site():
-    url = "http://ens-labs.com/RewardsMaximizer/"
+    url = "http://ens-labs.com/RewardsMaximizer/Website/index.html"
 
     # Set custom headers
     headers = {
