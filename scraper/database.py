@@ -36,8 +36,8 @@ def create_database():
         company_id INTEGER NOT NULL,
         name TEXT NOT NULL,
         description TEXT NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
     ''')
@@ -49,8 +49,8 @@ def create_database():
         company_id INTEGER NOT NULL,
         name TEXT NOT NULL,
         type TEXT NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
     ''')
@@ -61,9 +61,9 @@ def create_database():
         user_card_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         card_id INTEGER NOT NULL,
-        added DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        expires_on DATETIME NOT NULL,
+        added TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
+        expires_on TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
         FOREIGN KEY (card_id) REFERENCES cards(card_id) ON DELETE CASCADE
     )
@@ -76,9 +76,9 @@ def create_database():
         user_id INTEGER NOT NULL,
         reward_id INTEGER NOT NULL,
         status TEXT NOT NULL,
-        added DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        expires_on DATETIME NOT NULL,
+        added TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
+        expires_on TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
         FOREIGN KEY (reward_id) REFERENCES rewards(reward_id) ON DELETE CASCADE
     )
@@ -92,8 +92,8 @@ def create_database():
         company_id INTEGER NOT NULL,
         rating INTEGER NOT NULL,
         comments TEXT NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
         FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
@@ -108,8 +108,8 @@ def create_database():
         description TEXT NOT NULL,
         valid_from DATE NOT NULL,
         valid_to DATE NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
     )
     ''')
@@ -121,8 +121,8 @@ def create_database():
         user_id INTEGER NOT NULL,
         message TEXT NOT NULL,
         type TEXT NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
     )
     ''')
@@ -134,8 +134,8 @@ def create_database():
         user_id INTEGER NOT NULL,
         entity_type TEXT NOT NULL,
         comment_info TEXT NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL,  -- Change to TEXT for string date
         FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
     )
     ''')
@@ -148,8 +148,9 @@ def save_rewards_to_db(rewards_data):
     conn = sqlite3.connect('rewards_maximizer.db')
     cursor = conn.cursor()
 
-    cursor.executemany('INSERT INTO rewards (company_id, name, description) VALUES (?, ?, ?)', 
-                       [(data['company_id'], data['name'], data['description']) for data in rewards_data])
+    # Save rewards data with current timestamp
+    cursor.executemany('INSERT INTO rewards (company_id, name, description, created, updated) VALUES (?, ?, ?, ?, ?)', 
+                       [(data['company_id'], data['name'], data['description'], data['timestamp'], data['timestamp']) for data in rewards_data])
 
     conn.commit()
     conn.close()

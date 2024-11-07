@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from database import create_database, save_rewards_to_db
 import time
+from datetime import datetime
 
 # Function to scrape rewards data from Chick-fil-A
 def scrape_chick_fil_a():
@@ -34,6 +35,9 @@ def scrape_chick_fil_a():
         rewards_data = []
         seen_descriptions = set()  # To track duplicates
 
+        # Get the current timestamp as a string
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         # Loop through the found items and extract the reward descriptions
         for item in rewards_items:
             reward_description = item.p.text.strip() if item.p else "No Description"
@@ -42,13 +46,18 @@ def scrape_chick_fil_a():
             # Check for duplicates
             if reward_description not in seen_descriptions:
                 seen_descriptions.add(reward_description)
-                rewards_data.append({'company_id': 1, 'name': 'Chick-fil-A Reward', 'description': reward_description})
+                rewards_data.append({
+                    'company_id': 1,
+                    'name': 'Chick-fil-A Reward',
+                    'description': reward_description,
+                    'timestamp': current_time  # Add timestamp
+                })
 
         # Save rewards data to the database
         if rewards_data:
             print("------------------Chick-fil-A Rewards------------------")
             for data in rewards_data:
-                print(f"Reward Description: {data['description']}")
+                print(f"Reward Description: {data['description']}, Timestamp: {data['timestamp']}")
             save_rewards_to_db(rewards_data)
         else:
             print("No Chick-fil-A rewards data found.")
@@ -83,6 +92,9 @@ def scrape_navy_federal():
         rewards_data = []
         seen_cards = set()  # To track duplicates
 
+        # Get the current timestamp as a string
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         if rewards_table:
             rows = rewards_table.find_all('tr')[1:]  # Skip header row
             for row in rows:
@@ -101,14 +113,15 @@ def scrape_navy_federal():
                         rewards_data.append({
                             'company_id': 2,
                             'name': credit_card,
-                            'description': f"Without Deals: {without_deals}, With Deals: {with_deals}"
+                            'description': f"Without Deals: {without_deals}, With Deals: {with_deals}",
+                            'timestamp': current_time  # Add timestamp
                         })
 
         # Save rewards data to the database
         if rewards_data:
             print("------------------Navy Federal Rewards------------------")
             for data in rewards_data:
-                print(f"Credit Card: {data['name']}, {data['description']}")
+                print(f"Credit Card: {data['name']}, {data['description']}, Timestamp: {data['timestamp']}")
             save_rewards_to_db(rewards_data)
         else:
             print("No Navy Federal rewards data found.")
@@ -139,6 +152,10 @@ def scrape_mcdonalds():
         # Extract points and rewards information
         rewards = []
         seen_rewards = set()  # To track duplicates
+        
+        # Get the current timestamp as a string
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         for teaser in soup.find_all('div', class_='cmp-teaser'):
             title_element = teaser.find('h2')
             title = title_element.get_text(strip=True) if title_element else "No Title"
@@ -158,14 +175,15 @@ def scrape_mcdonalds():
                     rewards.append({
                         'company_id': 3,
                         'name': title,
-                        'description': description
+                        'description': description,
+                        'timestamp': current_time  # Add timestamp
                     })
 
         # Save rewards data to the database
         if rewards:
             print("------------------McDonald's Rewards------------------")
             for reward in rewards:
-                print(f"{reward['name']}: {reward['description']}")
+                print(f"{reward['name']}: {reward['description']}, Timestamp: {reward['timestamp']}")
             save_rewards_to_db(rewards)
         else:
             print("No McDonald's rewards data found.")
@@ -198,6 +216,9 @@ def scrape_dummy_site():
         seen_cards = set()  # To track duplicates
         cards = soup.find_all('div', class_='card')
 
+        # Get the current timestamp as a string
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         for card in cards:
             title = card.h2.text.strip() if card.h2 else "No Title"
             
@@ -217,14 +238,15 @@ def scrape_dummy_site():
                 rewards_data.append({
                     'company_id': 4,
                     'name': title,
-                    'description': description
+                    'description': description,
+                    'timestamp': current_time  # Add timestamp
                 })
 
         # Save rewards data to the database
         if rewards_data:
             print("------------------Dummy Site Rewards------------------")
             for data in rewards_data:
-                print(f"Credit Card: {data['name']}, Description: {data['description']}")
+                print(f"Credit Card: {data['name']}, Description: {data['description']}, Timestamp: {data['timestamp']}")
             save_rewards_to_db(rewards_data)
         else:
             print("No Dummy Site rewards data found.")
