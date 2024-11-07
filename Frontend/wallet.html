@@ -1,33 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digital Wallet - Rewards Maximizer</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Wallet - Rewards Maximizer</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap and Custom CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-light">
-  <div class="container">
-    <h2 class="mt-5 text-center">Your Digital Wallet</h2>
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card mt-3">
-          <div class="card-header">
-            <h4>Saved Credit Cards</h4>
-          </div>
-          <div class="card-body">
-            <ul class="list-group">
-              <li class="list-group-item">Visa Platinum - 1.5x Points on All Purchases</li>
-              <li class="list-group-item">MasterCard World Elite - 2x Points on Travel</li>
-              <li class="list-group-item">Amex Gold - 3x Points on Groceries</li>
-            </ul>
-            <button class="btn btn-success mt-3 w-100">Add New Card</button>
-          </div>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <!-- Main Content -->
+    <div class="wallet-container">
+        <h2 class="logo">Rewards Maximizer <i class="fas fa-credit-card"></i></h2>
+        <h2>Your Digital Wallet</h2>
+        <div class="card-list">
+            <div class="card-item">
+                <h4>Visa Platinum</h4>
+                <span class="badge">1.5x Points on All Purchases</span>
+            </div>
+            <div class="card-item">
+                <h4>MasterCard World Elite</h4>
+                <span class="badge">2x Points on Travel</span>
+            </div>
+            <div class="card-item">
+                <h4>Amex Gold</h4>
+                <span class="badge">3x Points on Groceries</span>
+            </div>
+            <!-- Additional card items as needed -->
         </div>
-      </div>
+        <button class="add-card-btn">Add New Card</button>
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <h5 class="footer-logo">Rewards Maximizer <i class="fas fa-credit-card"></i></h5>
+            <div class="social-icons my-2">
+                <a href="#" class="mx-2 text-white"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="mx-2 text-white"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="mx-2 text-white"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="mx-2 text-white"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="text-white mx-2">Contact Us</a> | 
+                <a href="#" class="text-white mx-2">About Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
