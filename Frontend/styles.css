@@ -277,3 +277,56 @@ body {
 .footer-links a:hover {
     color: #007BFF;
 }
+
+/* Navigation Bar Styling (for pages with more complex headers) */
+.navbar {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.navbar-links a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.navbar-links a:hover {
+    color: #007BFF;
+}
+
+.navbar-button {
+    font-size: 0.9em;
+    color: #333;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+.page-section {
+    padding: 2rem;
+}
+
+.page-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.page-card {
+    background-color: white;
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
