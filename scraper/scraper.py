@@ -257,7 +257,6 @@ def scrape_dummy_site():
 if __name__ == "__main__":
     # Add a delay to avoid triggering blocks
     time.sleep(2)  # Delay for 2 seconds before scraping
-
     scrape_chick_fil_a()
     time.sleep(2)  # Additional delay before the next request
     scrape_navy_federal()

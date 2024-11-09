@@ -11,8 +11,8 @@ def create_database():
         username TEXT NOT NULL,
         email TEXT NOT NULL,
         password TEXT NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL  -- Change to TEXT for string date
     )
     ''')
 
@@ -24,8 +24,8 @@ def create_database():
         description TEXT NOT NULL,
         website TEXT NOT NULL,
         contact_email TEXT NOT NULL,
-        created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created TEXT NOT NULL,  -- Change to TEXT for string date
+        updated TEXT NOT NULL  -- Change to TEXT for string date
     )
     ''')
 
@@ -148,6 +148,7 @@ def save_rewards_to_db(rewards_data):
     conn = sqlite3.connect('rewards_maximizer.db')
     cursor = conn.cursor()
 
+    create_database() # I couldn't get it to work without this here
     # Save rewards data with current timestamp
     cursor.executemany('INSERT INTO rewards (company_id, name, description, created, updated) VALUES (?, ?, ?, ?, ?)', 
                        [(data['company_id'], data['name'], data['description'], data['timestamp'], data['timestamp']) for data in rewards_data])
