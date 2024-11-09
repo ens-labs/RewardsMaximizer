@@ -1,6 +1,5 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
-use chrono::{NaiveDate, NaiveDateTime};
 use diesel::sql_types::Timestamp;
 use crate::web::schema;
 
@@ -8,8 +7,10 @@ use crate::web::schema;
 #[diesel(table_name = schema::users)]
 pub struct User {
     pub user_id: i32,
+    pub created: String,
     pub email: String,
     pub password: String,
+    pub updated: String,
     pub username: String,
 }
 
@@ -25,10 +26,10 @@ pub struct NewUser {
 #[diesel(table_name = schema::user_cards)]
 pub struct UserCard {
     pub user_card_id: i32,
-    pub added: NaiveDateTime,
+    pub added: String,
     pub card_id: i32,
-    pub expires_on: NaiveDateTime,
-    pub updated: NaiveDateTime,
+    pub expires_on: String,
+    pub updated: String,
     pub user_id: i32,
 }
 
@@ -37,10 +38,10 @@ pub struct UserCard {
 pub struct Card {
     pub card_id: i32,
     pub company_id: i32,
-    pub created: chrono::NaiveDateTime,
+    pub created: String,
     pub name: String,
     pub r#type: String,
-    pub updated: chrono::NaiveDateTime,
+    pub updated: String,
 }
 
 #[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
@@ -60,8 +61,8 @@ pub struct Company {
     pub description: String,
     pub website: String,
     pub contact_email: String,
-    pub created: NaiveDateTime,
-    pub updated: NaiveDateTime,
+    pub created: String,
+    pub updated: String,
 
 }
 
@@ -79,10 +80,10 @@ pub struct NewCompany {
 pub struct Reward {
     pub reward_id: i32,
     pub company_id: i32,
-    pub created: NaiveDateTime,
+    pub created: String,
     pub description: String,
     pub name: String,
-    pub updated: NaiveDateTime,
+    pub updated: String,
 }
 
 #[derive(Queryable, Selectable)]
@@ -91,9 +92,9 @@ pub struct UserFeedback {
     pub feedback_id: i32,
     pub comments: String,
     pub company_id: i32,
-    pub created: NaiveDateTime,
+    pub created: String,
     pub rating: i32,
-    pub updated: NaiveDateTime,
+    pub updated: String,
     pub user_id: i32,
 }
 
@@ -102,12 +103,12 @@ pub struct UserFeedback {
 pub struct VendorDeal {
     pub deal_id: i32,
     pub company_id: i32,
-    pub created: NaiveDateTime,
+    pub created: String,
     pub description: String,
     pub title: String,
-    pub updated: NaiveDateTime,
-    pub valid_from: NaiveDateTime,
-    pub valid_to: NaiveDateTime,
+    pub updated: String,
+    pub valid_from: String,
+    pub valid_to: String,
 }
 
 // Fix
@@ -116,14 +117,14 @@ pub struct VendorDeal {
 pub struct NewVendorDeal {
     //pub deal_id: i32,
     pub company_id: i32,
-    //pub created: NaiveDateTime,
+    //pub created: String,
     pub description: String,
     pub title: String,
-    //pub updated: NaiveDateTime,
+    //pub updated: String,
     // #[diesel(sql_type = diesel::sql_types::Timestamp)]
-    // pub valid_from: NaiveDateTime,
+    // pub valid_from: String,
     // #[diesel(sql_type = diesel::sql_types::Timestamp)]
-    // pub valid_to: NaiveDateTime,
+    // pub valid_to: String,
 }
 
 #[derive(Queryable, Selectable)]
@@ -131,9 +132,9 @@ pub struct NewVendorDeal {
 pub struct Comment {
     pub comment_id: i32,
     pub comment_info: String,
-    pub created: NaiveDateTime,
+    pub created: String,
     pub entity_type: String,
-    pub updated: NaiveDateTime,
+    pub updated: String,
     pub user_id: i32,
 }
 
@@ -141,10 +142,10 @@ pub struct Comment {
 #[diesel(table_name = schema::notifications)]
 pub struct Notification {
     pub notification_id: i32,
-    pub created: NaiveDateTime,
+    pub created: String,
     pub message: String,
     pub r#type: String,
-    pub updated: NaiveDateTime,
+    pub updated: String,
     pub user_id: i32,
 }
 
@@ -152,10 +153,10 @@ pub struct Notification {
 #[diesel(table_name = schema::user_rewards)]
 pub struct UserReward {
     pub user_reward_id: i32,
-    pub added: NaiveDateTime,
-    pub expires_on: NaiveDateTime,
+    pub added: String,
+    pub expires_on: String,
     pub reward_id: i32,
     pub status: String,
-    pub updated: NaiveDateTime,
+    pub updated: String,
     pub user_id: i32,
 }
