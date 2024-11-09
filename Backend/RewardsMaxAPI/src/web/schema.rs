@@ -4,10 +4,10 @@ diesel::table! {
     cards (card_id) {
         card_id -> Nullable<Integer>,
         company_id -> Integer,
-        created -> Timestamp,
+        created -> Text,
         name -> Text,
         r#type -> Text,
-        updated -> Timestamp,
+        updated -> Text,
     }
 }
 
@@ -18,29 +18,29 @@ diesel::table! {
         description -> Text,
         website -> Text,
         contact_email -> Text,
-        created -> Timestamp,
-        updated -> Timestamp,
+        created -> Text,
+        updated -> Text,
     }
 }
 
 diesel::table! {
     user_cards (user_card_id) {
         user_card_id -> Nullable<Integer>,
-        added -> Timestamp,
+        added -> Text,
         card_id -> Integer,
-        expires_on -> Timestamp,
-        updated -> Timestamp,
+        expires_on -> Text,
+        updated -> Text,
         user_id -> Integer,
     }
 }
 
 diesel::table! {
     users (user_id) {
-        user_id -> Nullable<Integer>,
-        created -> Timestamp,
+        user_id -> Integer,
+        created -> Text,
         email -> Text,
         password -> Text,
-        updated -> Timestamp,
+        updated -> Text,
         username -> Text,
     }
 }
@@ -49,10 +49,10 @@ diesel::table! {
     rewards (reward_id) {
         reward_id -> Nullable<Integer>,
         company_id -> Integer,
-        created -> Timestamp,
+        created -> Text,
         description -> Text,
         name -> Text,
-        updated -> Timestamp,
+        updated -> Text,
     }
 }
 
@@ -61,9 +61,9 @@ diesel::table! {
         feedback_id -> Nullable<Integer>,
         comments -> Text,
         company_id -> Integer,
-        created -> Timestamp,
+        created -> Text,
         rating -> Integer,
-        updated -> Timestamp,
+        updated -> Text,
         user_id -> Integer,
     }
 }
@@ -72,10 +72,10 @@ diesel::table! {
     vendor_deals (deal_id) {
         deal_id -> Nullable<Integer>,
         company_id -> Integer,
-        created -> Timestamp,
+        created -> Text,
         description -> Text,
         title -> Text,
-        updated -> Timestamp,
+        updated -> Text,
         valid_from -> Date,
         valid_to -> Date,
     }
@@ -85,9 +85,9 @@ diesel::table! {
     comments (comment_id) {
         comment_id -> Nullable<Integer>,
         comment_info -> Text,
-        created -> Timestamp,
+        created -> Text,
         entity_type -> Text,
-        updated -> Timestamp,
+        updated -> Text,
         user_id -> Integer,
     }
 }
@@ -95,10 +95,10 @@ diesel::table! {
 diesel::table! {
     notifications (notification_id) {
         notification_id -> Nullable<Integer>,
-        created -> Timestamp,
+        created -> Text,
         message -> Text,
         r#type -> Text,
-        updated -> Timestamp,
+        updated -> Text,
         user_id -> Integer,
     }
 }
@@ -106,11 +106,11 @@ diesel::table! {
 diesel::table! {
     user_rewards (user_reward_id) {
         user_reward_id -> Nullable<Integer>,
-        added -> Timestamp,
-        expires_on -> Timestamp,
+        added -> Text,
+        expires_on -> Text,
         reward_id -> Integer,
         status -> Text,
-        updated -> Timestamp,
+        updated -> Text,
         user_id -> Integer,
     }
 }
