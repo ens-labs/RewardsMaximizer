@@ -13,12 +13,12 @@ use tower_sessions_sqlx_store::SqliteStore;
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
+use tower_http::services::ServeDir;
 //use crate::web::recommendations; // Import the recommendations module
-
 
 use crate:: {
     users::Backend,
-    web::{auth, protected, user, index, companies, vendor_deals},
+    web::{auth, protected, user, index, companies, vendor_deals, crowdsourcing},
 };
 
 pub struct App {
@@ -66,6 +66,7 @@ impl App {
         //
         // If you need to add a router from another mod
         // use the merge function as shown below
+        let serve_dir = ServeDir::new("static");//.not_found_service(ServeDir::new("templates/404.html"));
         let app = protected::router()
             .route_layer(login_required!(Backend, login_url = "/login"))
             .merge(auth::router())
@@ -73,9 +74,11 @@ impl App {
             .merge(index::router())
             .merge(companies::router())
             .merge(vendor_deals::router())
+            .merge(crowdsourcing::router())
             // .route("/recommendations/:user_id", axum::routing::get(recommendations::get_recommendations))
             .layer(MessagesManagerLayer)
-            .layer(auth_layer);
+            .layer(auth_layer)
+            .nest_service("/static", serve_dir.clone());
 
         // If running locally change to "127.0.0.1:8080"
         let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); // localhost:8000

@@ -13,3 +13,4 @@ pub mod schema;
 mod recommendations;
 mod companies;
 mod vendor_deals;
+mod crowdsourcing;
