@@ -59,7 +59,7 @@ impl App {
         //
         // This combines the session layer with our backend to establish the auth
         // service which will provide the auth session as a request extension.
-        let backend = Backend;
+        let backend = Backend::new(self.db);
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         // Main router

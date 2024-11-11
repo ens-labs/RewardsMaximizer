@@ -7,17 +7,17 @@ use crate::web::lib::establish_connection;
 
 pub fn router() -> Router<()> {
     Router::new()
-        //.route("/addVendorDeals", post(self::post::add_vendor_deals))
-        //.route("/addVendorDeals", get(self::get::view_vendor_deals))
+        .route("/addVendorDeals", post(self::post::add_vendor_deals))
+        .route("/addVendorDeals", get(self::get::view_vendor_deals))
 
 }
 
 mod get {
     use super::*;
 
-    // pub async fn view_vendor_deals() {
-    //     //Code goes here
-    // }
+    pub async fn view_vendor_deals() -> &'static str  {
+        "View Vendor deals endpoint"
+    }
  }
 
 mod post {

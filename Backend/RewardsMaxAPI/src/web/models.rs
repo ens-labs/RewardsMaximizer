@@ -112,18 +112,13 @@ pub struct VendorDeal {
 }
 
 // Fix
-#[derive(Queryable, Insertable, Selectable)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, Selectable)]
 #[diesel(table_name = schema::vendor_deals)]
 pub struct NewVendorDeal {
-    //pub deal_id: i32,
     pub company_id: i32,
-    //pub created: String,
     pub description: String,
     pub title: String,
-    //pub updated: String,
-    // #[diesel(sql_type = diesel::sql_types::Timestamp)]
     // pub valid_from: String,
-    // #[diesel(sql_type = diesel::sql_types::Timestamp)]
     // pub valid_to: String,
 }
 
