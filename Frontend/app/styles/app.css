@@ -293,12 +293,11 @@ body {
   font-size: 1em;
 } */
 
-
 .text-btn:hover {
   color: #007bff;
 }
 
-.text-btn{
+.text-btn {
   color: white;
   margin: 0 15px;
   text-decoration: none;
@@ -306,7 +305,6 @@ body {
   border-style: none;
   background: none;
 }
-
 
 .navbar-button {
   font-size: 0.9em;
@@ -339,5 +337,3 @@ body {
   box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
   text-align: center;
 }
-
-  

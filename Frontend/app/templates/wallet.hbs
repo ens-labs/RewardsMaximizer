@@ -28,7 +28,7 @@
   </head>
   <body class="bg-light d-flex flex-column min-vh-100">
 
-    <!-- Header -->
+    {{! Header }}
     <header class="header bg-dark text-white py-3">
       <div class="container d-flex justify-content-between align-items-center">
         <h1 class="header-logo">Rewards Maximizer
@@ -36,19 +36,19 @@
         <nav class="navbar-links">
           {{! <button type="home" class="text-btn">Home</button> }}
           <button
-            type="home"
+            type="button"
             {{on "click" this.home}}
             class="text-btn"
           >Home</button>
           <button
-            type="search"
+            type="button"
             {{on "click" this.search}}
             class="text-btn"
           >Search</button>
           {{!-- {{on "profile" this.profile}} --}}
-          <button type="profile" class="text-btn">Profile</button>
+          <button type="button" class="text-btn">Profile</button>
           <button
-            type="feedback"
+            type="button"
             {{on "click" this.crowdsourcing}}
             class="navbar-button"
           >User Feedback</button>
@@ -56,17 +56,14 @@
       </div>
     </header>
 
-    <!-- Main Content -->
+    {{! Main Content }}
     <div class="container my-4">
       <h2 class="text-center">Your Digital Wallet</h2>
       <div class="row mt-4">
 
-        <!-- Chase Freedom Unlimited -->
+        {{! Chase Freedom Unlimited }}
         <div class="col-md-4 mb-4">
-          <a
-            href="card-details.html?card=chase-freedom-unlimited"
-            class="text-decoration-none"
-          >
+          <a href="card-details" class="text-decoration-none">
             <div class="card shadow-sm text-center">
               <div class="generic-card-icon bg-chase">
                 <i class="fab fa-cc-visa"></i>
@@ -82,7 +79,7 @@
           </a>
         </div>
 
-        <!-- Chase Sapphire Preferred -->
+        {{! Chase Sapphire Preferred }}
         <div class="col-md-4 mb-4">
           <div class="card shadow-sm text-center">
             <div class="generic-card-icon bg-sapphire">
@@ -96,7 +93,7 @@
           </div>
         </div>
 
-        <!-- Amazon Prime Rewards Visa -->
+        {{! Amazon Prime Rewards Visa }}
         <div class="col-md-4 mb-4">
           <div class="card shadow-sm text-center">
             <div class="generic-card-icon bg-amazon">
@@ -115,10 +112,11 @@
         class="btn btn-dark mt-3 w-100"
         data-bs-toggle="modal"
         data-bs-target="#addCardModal"
+        type="button"
       >Add New Card</button>
     </div>
 
-    <!-- Modal for Adding a New Card -->
+    {{! Modal for Adding a New Card }}
     <div
       class="modal fade"
       id="addCardModal"
@@ -183,7 +181,7 @@
       </div>
     </div>
 
-    <!-- Footer -->
+    {{! Footer }}
     <footer class="footer bg-dark text-white py-3 mt-auto">
       <div class="container text-center">
         <h5

@@ -13,4 +13,5 @@ Router.map(function () {
   this.route('search');
   this.route('search_results');
   this.route('crowdsourcing');
+  this.route('card-details'); // Dynamic segment for card details
 });

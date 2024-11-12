@@ -14,12 +14,12 @@
     <header class="navbar">
        <h1 class="header-logo">Rewards Maximizer <i class="fas fa-credit-card card-icon"></i></h1>
         <nav class="navbar-links">
-            <button type="home" {{on "click" this.home}} class="text-btn">Home</button>
-            <button type="search" {{on "click" this.search}} class="text-btn">Search</button>
-            <button type="wallet" {{on "click" this.wallet}} class="text-btn">Wallet</button>
+            <button type="button" {{on "click" this.home}} class="text-btn">Home</button>
+            <button type="button" {{on "click" this.search}} class="text-btn">Search</button>
+            <button type="button" {{on "click" this.wallet}} class="text-btn">Wallet</button>
             {{!-- {{on "profile" this.profile}} --}}
-            <button type="profile" class="text-btn">Profile</button>
-            <button type="feedback" {{on "click" this.crowdsourcing}} class="navbar-button">User Feedback</button>
+            <button type="button" class="text-btn">Profile</button>
+            <button type="button" {{on "click" this.crowdsourcing}} class="navbar-button">User Feedback</button>
         </nav>
     </header>
 

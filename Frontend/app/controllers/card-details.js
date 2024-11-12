@@ -2,8 +2,8 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 
-export default class Wallet extends Controller {
-  @service router;
+export default class CardDetailsController extends Controller {
+@service router;
 
   // Navigate to home
   @action
@@ -12,11 +12,11 @@ export default class Wallet extends Controller {
     this.router.transitionTo('home');
   }
 
-  // Navigate to search
+  // Navigate to wallet
   @action
-  search(event) {
+  wallet(event) {
     event.preventDefault();
-    this.router.transitionTo('search');
+    this.router.transitionTo('wallet');
   }
 
   // Navigate to profile
@@ -31,5 +31,12 @@ export default class Wallet extends Controller {
   crowdsourcing(event) {
     event.preventDefault();
     this.router.transitionTo('crowdsourcing');
+  }
+
+  // Future functionality for product search
+  @action
+  results(event) {
+    event.preventDefault();
+    this.router.transitionTo('search_results');
   }
 }
