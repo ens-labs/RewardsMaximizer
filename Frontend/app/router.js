@@ -1,3 +1,4 @@
+// app/router.js
 import EmberRouter from '@ember/routing/router';
 import config from 'frontend/config/environment';
 
@@ -13,5 +14,5 @@ Router.map(function () {
   this.route('search');
   this.route('search_results');
   this.route('crowdsourcing');
-  this.route('card-details'); // Dynamic segment for card details
+  this.route('card-details', { path: '/card-details/:cardName/:cardBenefits' }); // Dynamic route for card details
 });
