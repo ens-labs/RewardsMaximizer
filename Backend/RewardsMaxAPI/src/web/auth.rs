@@ -9,7 +9,7 @@ use axum::{
 use axum_messages::{Message, Messages};
 use serde::Deserialize;
 
-use crate::users::{AuthSession, Credentials};
+use crate::users::{AuthSession, Backend, Credentials};
 
 #[derive(Template)]
 #[template(path = "login.html")]
@@ -24,6 +24,8 @@ pub struct SignupTemplate {
     messages: Vec<Message>,
     next: Option<String>,
 }
+
+
 
 // This allows us to extract the "next" field from the query string. We use this
 // to redirect after log in.

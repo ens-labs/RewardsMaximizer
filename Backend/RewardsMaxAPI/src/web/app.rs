@@ -81,7 +81,7 @@ impl App {
             .nest_service("/static", serve_dir.clone());
 
         // If running locally change to "127.0.0.1:8080"
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); // localhost:8000
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:8080").await.unwrap();
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
