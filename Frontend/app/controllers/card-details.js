@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 
 export default class CardDetailsController extends Controller {
-@service router;
+  @service router;
 
   // Navigate to home
   @action
