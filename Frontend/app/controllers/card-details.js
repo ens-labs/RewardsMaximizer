@@ -1,8 +1,14 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
+import { service } from '@ember/service';
 
 export default class CardDetailsController extends Controller {
+  @service router;
+
   rating = 0; // Store the rating state
+
+  // Assuming cardIcon is coming from the model data
+  cardIcon = 'fas fa-credit-card'; // Example: FontAwesome class
 
   // Set the rating when a user clicks a star
   @action
@@ -24,21 +30,24 @@ export default class CardDetailsController extends Controller {
     this.router.transitionTo('wallet');
   }
 
+  // Navigate to profile
   @action
   profile(event) {
     event.preventDefault();
     this.router.transitionTo('profile');
   }
 
+  // Navigate to crowdsourcing
   @action
   crowdsourcing(event) {
     event.preventDefault();
     this.router.transitionTo('crowdsourcing');
   }
 
+  // Navigate to search
   @action
-  results(event) {
+  search(event) {
     event.preventDefault();
-    this.router.transitionTo('search_results');
+    this.router.transitionTo('search');
   }
 }
