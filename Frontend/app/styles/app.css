@@ -337,3 +337,19 @@ body {
   box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
   text-align: center;
 }
+
+/* Styling the stars */
+.star {
+  font-size: 2rem;
+  color: lightgray; /* Light gray for inactive stars */
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.star.active {
+  color: gold; /* Gold for active stars */
+}
+
+.star:hover {
+  color: #f39c12; /* Change color to gold on hover */
+}
