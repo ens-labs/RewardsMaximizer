@@ -14,5 +14,5 @@ Router.map(function () {
   this.route('search');
   this.route('search_results');
   this.route('crowdsourcing');
-  this.route('card-details', { path: '/card-details/:cardName/:cardBenefits' }); // Dynamic route for card details
+  this.route('card-details', { path: '/card-details/:cardId' }); // Dynamic route for card details
 });

@@ -5,4 +5,5 @@ export default class CardModel extends Model {
   @attr('string') cardBenefits;
   @attr('string') iconClass;
   @attr('string') bgColorClass;
+  @attr('string') cardId;
 }
