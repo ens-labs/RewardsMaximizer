@@ -27,11 +27,11 @@ export default class Results extends Controller {
   }
 
   // Navigate to profile
-  // @action
-  // profile(event) {
-  //   event.preventDefault();
-  //   this.router.transitionTo('profile');
-  // }
+  @action
+  profile(event) {
+    event.preventDefault();
+    this.router.transitionTo('profile');
+  }
 
   // Navigate to crowdsourcing
   @action

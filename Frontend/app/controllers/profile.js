@@ -2,8 +2,15 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 
-export default class Home extends Controller {
+export default class Profile extends Controller {
   @service router;
+
+  // Navigate to home
+  @action
+  home(event) {
+    event.preventDefault();
+    this.router.transitionTo('home');
+  }
 
   // Navigate to wallet
   @action
@@ -17,13 +24,6 @@ export default class Home extends Controller {
   search(event) {
     event.preventDefault();
     this.router.transitionTo('search');
-  }
-
-  // Navigate to profile
-  @action
-  profile(event) {
-    event.preventDefault();
-    this.router.transitionTo('profile');
   }
 
   // Navigate to crowdsourcing

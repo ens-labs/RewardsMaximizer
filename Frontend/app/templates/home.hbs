@@ -21,8 +21,7 @@
                 {{!-- <button type="home" class="text-btn">Home</button> --}}
                 <button type="button" {{on "click" this.wallet}} class="text-btn">Wallet</button>
                 <button type="button" {{on "click" this.search}} class="text-btn">Search</button>
-                {{!-- {{on "profile" this.profile}} --}}
-                <button type="button" class="text-btn">Profile</button>
+                <button type="button" {{on "click" this.profile}} class="text-btn">Profile</button>
                 <button type="button" {{on "click" this.crowdsourcing}} class="navbar-button">User Feedback</button>
             </nav>
         </div>

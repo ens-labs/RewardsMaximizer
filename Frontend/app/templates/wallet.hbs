@@ -40,7 +40,11 @@
             {{on "click" this.search}}
             class="text-btn"
           >Search</button>
-          <button type="button" class="text-btn">Profile</button>
+          <button 
+            type="button" 
+            {{on "click" this.profile}}
+            class="text-btn">
+            Profile</button>
           <button
             type="button"
             {{on "click" this.crowdsourcing}}
