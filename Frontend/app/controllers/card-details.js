@@ -2,23 +2,13 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 
 export default class CardDetailsController extends Controller {
+  rating = 0; // Store the rating state
 
-  // Set the active class for clicked star
+  // Set the rating when a user clicks a star
   @action
-  setActiveStar(event) {
-    const selectedStar = event.target.dataset.star;
-
-    // Loop over all the stars and remove "active" class
-    for (let i = 1; i <= 5; i++) {
-      const star = document.getElementById(`star${i}`);
-      star.classList.remove('active');
-    }
-
-    // Add the "active" class to the selected star and all stars before it
-    for (let i = 1; i <= selectedStar; i++) {
-      const star = document.getElementById(`star${i}`);
-      star.classList.add('active');
-    }
+  setRating(event) {
+    const selectedRating = parseInt(event.target.dataset.star, 10); // Get the rating from the data-star attribute
+    this.set('rating', selectedRating); // Update the rating state
   }
 
   // Navigate to other pages
