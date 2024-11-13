@@ -1,13 +1,9 @@
 use async_trait::async_trait;
 use axum_login::{AuthUser, AuthnBackend, UserId};
-use bcrypt::{hash, verify};
-use diesel::prelude::*;
-use diesel::r2d2::{self, ConnectionManager};
+use password_auth::verify_password;
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
+use sqlx::{FromRow, SqlitePool};
 use tokio::task;
-
-use crate::schema::users;
 
 #[derive(Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
@@ -61,47 +57,16 @@ impl Backend {
     pub fn new(db: SqlitePool) -> Self {
         Self { db }
     }
-
-    pub async fn authenticate(&self, creds: Credentials) ->Result<Option<User>, Error>{
-        let db = self.db.clone();
-        let username = creds.username.clone();
-        let password = creds.password.clone();
-
-        task::spawn_blocking(move || {
-            let conn = db.get()?;
-            let user = users::table
-                .filter(users::username.eq(&username))
-                .first::<User>(^conn)
-                .optional()?;
-
-            if let Some(ref user) = user {
-                if verify(&password, &user.password)? {
-                    return OK(Some(user.clone()));
-                }
-            }
-            Ok(None)
-        })
-        .await?
-    }
 }
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error(transparent)]
-    Diesel(#[from] diesel::result::Error),
+    Sqlx(#[from] sqlx::Error),
 
     #[error(transparent)]
     TaskJoin(#[from] task::JoinError),
 }
-
-#[derive(Insertable)]
-#[table_name = "users"]
-pub struct NewUser {
-    pub username: String,
-    pub password: String,
-}
-
-
 
 #[async_trait]
 impl AuthnBackend for Backend {
@@ -113,22 +78,31 @@ impl AuthnBackend for Backend {
         &self,
         creds: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
-        self.authenticate(cred).await
-    }
         
-    async fn get_user(&self, user_id: &UserID<Self>) -> Resut<Option<Self::User>, Self::Error>{
-        let db = self.db.clone();
-        let user_id = *user_id;
+        let user: Option<Self::User> = sqlx::query_as("select * from users where username = ? ")
+            .bind(creds.username)
+            .fetch_optional(&self.db)
+            .await?;
 
-        task::spawn_blocking(move || {
-            let conn = db.get()?;
-            users::table.filter(users::id.eq(user_id)).first::<User>(&conn).optional()
+        // Verifying the password is blocking and potentially slow, so we'll do so via
+        // `spawn_blocking`.
+        task::spawn_blocking(|| {
+            // We're using password-based authentication--this works by comparing our form
+            // input with an argon2 password hash.
+            Ok(user.filter(|user| verify_password(creds.password, &user.password).is_ok()))
         })
         .await?
     }
+
+    async fn get_user(&self, user_id: &UserId<Self>) -> Result<Option<Self::User>, Self::Error> {
+        let user = sqlx::query_as("select * from users where id = ?")
+            .bind(user_id)
+            .fetch_optional(&self.db)
+            .await?;
+
+        Ok(user)
+    }
 }
-
-
 
 // We use a type alias for convenience.
 //
