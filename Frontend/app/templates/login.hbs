@@ -24,17 +24,20 @@
     <div class="login-container">
         <h1 class="logo">Rewards Maximizer <i class="fas fa-credit-card"></i></h1>
         {{!-- dynamic braces indicate function call? --}}
-        <form {{on "submit" this.login}} class="login-form">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Enter Email">
+        <form {{on "submit" this.handleLogin}} class="login-form">
+            <label for="username">Username</label>
+            <input type="username" id="username" placeholder="Enter Username" {{on "input" this.setUsername}} required>
             
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter Password">
+            <input type="password" id="password" placeholder="Enter Password" {{on "input" this.setPassword}} required>
             
             <button type="submit" class="login-btn">Sign In</button>
             
             <a href="#" class="forgot-password">Forgot password?</a>
         </form>
+        {{#if this.errorMessage}}
+            <p class="Invalid credentials">{{this.errorMessage}}</p>
+        {{/if}}
         <p class="signup-link">New to Rewards Maximizer? <a href="#">Join now</a></p>
     </div>
 
