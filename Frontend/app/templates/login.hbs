@@ -23,7 +23,6 @@
 
     <div class="login-container">
         <h1 class="logo">Rewards Maximizer <i class="fas fa-credit-card"></i></h1>
-        {{!-- dynamic braces indicate function call? --}}
         <form {{on "submit" this.handleLogin}} class="login-form">
             <label for="username">Username</label>
             <input type="username" id="username" placeholder="Enter Username" {{on "input" this.setUsername}} required>
