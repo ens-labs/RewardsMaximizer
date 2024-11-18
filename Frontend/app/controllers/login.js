@@ -23,8 +23,8 @@ export default class Login extends Controller {
     event.preventDefault();
 
     const formBody = JSON.stringify({
-      username: "username",
-      password: "password",
+      username: this.username,
+      password: this.password,
     });
 
     try {
