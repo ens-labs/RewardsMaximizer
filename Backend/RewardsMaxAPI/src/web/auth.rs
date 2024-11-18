@@ -4,7 +4,7 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Redirect},
     routing::{get, post},
-    Form, Router,
+    Json, Form, Router,
 };
 use axum_messages::{Message, Messages};
 use serde::Deserialize;
@@ -48,7 +48,7 @@ mod post {
     pub async fn login(
         mut auth_session: AuthSession,
         messages: Messages,
-        Form(creds): Form<Credentials>,
+        Json(creds): Json<Credentials>,
     ) -> impl IntoResponse {
         let user = match auth_session.authenticate(creds.clone()).await {
             Ok(Some(user)) => user,
