@@ -1,7 +1,7 @@
 use axum::{routing::get, routing::post, Router, Json, response::IntoResponse};
 use serde::Deserialize;
 use diesel::{prelude::*, sqlite::SqliteConnection};
-use crate::web::models::{NewUser, NewCard};
+use crate::web::models::{NewUser, NewCard, UserCard};
 use crate::web::lib::establish_connection;
 //use crate::users::AuthSession;
 
@@ -17,22 +17,27 @@ pub fn router() -> Router<()> {
 }
 
 mod get {
-    //use super::*;
+    use super::*;
     
     pub async fn dashboard() -> &'static str {
         "Dashboard endpoint"
     }
 
-    pub async fn cards() -> &'static str {
-        "Hello, credit cards!"
+    pub async fn cards() {
+        use crate::web::schema::user_cards::dsl::*;
+
+        let mut connection = establish_connection();
+
+        // Need to update to specify user_id based on AuthSession
+        let results = user_cards.filter(user_id.eq(1)).limit(5).select(UserCard::as_select()).load(&mut connection).expect("Error loading cards");
     }
 
     pub async fn add_card() -> &'static str {
-        "Adding cards endpoint"
+        "DISPLAY TEMPLATE FOR ADDING CARD"
     }
 
     pub async fn delete_card() -> &'static str {
-        "Delete cards endpoint"
+        "DISPLAY TEMPLATE FOR DELETING CARD"
     }
  }
 
@@ -61,7 +66,7 @@ mod post {
         use crate::web::schema::cards::dsl::*;
 
         let mut connection = establish_connection();
-    
+
         match diesel::insert_into(cards)
             .values(&new_card)
             .execute(&mut connection)
@@ -75,8 +80,25 @@ mod post {
         }
     }
 
-    pub async fn  delete_card() -> &'static str {
-        "Deleting cards endpoint"
+    // TODO:
+    // Need to update based on AuthSession and given user_card_id
+    pub async fn  delete_card() -> impl IntoResponse {
+        use crate::web::schema::user_cards::dsl::*;
+
+        let mut connection = establish_connection();
+
+        match diesel::delete(
+            user_cards.filter(user_id.eq(1).and(user_card_id.eq(1)))
+        )
+            .execute(&mut connection)
+        {
+            Ok(_) => (axum::http::StatusCode::OK, "data removed into the database").into_response(),
+            Err(e) => (
+                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Failed to remove data: {}", e),
+            )
+            .into_response(),
+        }
     }
 
 }

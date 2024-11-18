@@ -14,6 +14,10 @@ use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
 use tower_http::services::ServeDir;
+use tower_http::cors::CorsLayer;
+use http::header::{CONTENT_TYPE};
+use tower_http::cors::Any;
+use http::Method;
 //use crate::web::recommendations; // Import the recommendations module
 
 use crate:: {
@@ -62,6 +66,12 @@ impl App {
         let backend = Backend::new(self.db);
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
+        let cors = CorsLayer::new()
+            //.allow_credentials(true) -> will have to change .allow_origin in order to use
+            .allow_methods(vec![Method::GET, Method::POST, Method::PUT, Method::DELETE])
+            .allow_origin(Any)
+            .allow_headers([CONTENT_TYPE]);
+
         // Main router
         //
         // If you need to add a router from another mod
@@ -78,6 +88,7 @@ impl App {
             // .route("/recommendations/:user_id", axum::routing::get(recommendations::get_recommendations))
             .layer(MessagesManagerLayer)
             .layer(auth_layer)
+            .layer(cors)
             .nest_service("/static", serve_dir.clone());
 
         // If running locally change to "127.0.0.1:8080"

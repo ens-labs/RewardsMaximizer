@@ -26,7 +26,7 @@ mod post {
     pub async fn add_vendor_deals(Json(new_vendor_deal): Json<NewVendorDeal>) -> impl IntoResponse {
         use crate::web::schema::vendor_deals::dsl::*;
         let mut connection = establish_connection();
-    
+
         match diesel::insert_into(vendor_deals)
             .values(&new_vendor_deal)
             .execute(&mut connection)

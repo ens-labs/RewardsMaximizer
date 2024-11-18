@@ -23,8 +23,8 @@ export default class Login extends Controller {
     event.preventDefault();
 
     const formBody = JSON.stringify({
-      username: username,
-      password: password,
+      username: "username",
+      password: "password",
     });
 
     try {
@@ -32,6 +32,7 @@ export default class Login extends Controller {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: formBody,
       });

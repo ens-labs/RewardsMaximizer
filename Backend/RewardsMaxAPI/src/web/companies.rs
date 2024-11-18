@@ -34,7 +34,7 @@ mod get {
             )
             .into_response(),
         }
-        
+
     }
  }
 
@@ -44,7 +44,7 @@ mod post {
     pub async fn add_company(Json(new_company): Json<NewCompany>) -> impl IntoResponse {
         use crate::web::schema::companies::dsl::*;
         let mut connection = establish_connection();
-    
+
         match diesel::insert_into(companies)
             .values(&new_company)
             .execute(&mut connection)

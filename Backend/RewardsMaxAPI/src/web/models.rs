@@ -24,6 +24,7 @@ pub struct NewUser {
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = schema::user_cards)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct UserCard {
     pub user_card_id: i32,
     pub added: String,

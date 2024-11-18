@@ -25,7 +25,7 @@ diesel::table! {
 
 diesel::table! {
     user_cards (user_card_id) {
-        user_card_id -> Nullable<Integer>,
+        user_card_id -> Integer,
         added -> Text,
         card_id -> Integer,
         expires_on -> Text,
