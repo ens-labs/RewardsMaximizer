@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,14 +22,14 @@
         </div>
     </header>
 
-    <!-- Profile Section -->
+    {{!-- Profile Section --}}
     <div class="profile-container">
-        <!-- Profile Icon (replacing Profile Picture) -->
+        {{!-- Profile Icon (replacing Profile Picture) --}}
         <div class="profile-icon">
-            <i class="fas fa-user-circle"></i> <!-- Using a large Font Awesome user icon -->
+            <i class="fas fa-user-circle"></i> {{!-- Using a large Font Awesome user icon --}}
         </div>
 
-         <!-- Profile Info -->
+         {{!-- Profile Info --}}
          <div class="profile-info">
             <h2>Account Information</h2>
             <label for="username" class="info-label">Username</label>
@@ -41,11 +41,11 @@
             <label for="location" class="info-label">Location</label>
             <div id="location" class="info-box">City, Country</div>
 
-            <button class="security-settings-btn">Security Settings</button>
+            <button class="security-settings-btn" type="button">Security Settings</button>
         </div>
     </div>
 
-    <!-- Reviews Section -->
+    {{!-- Reviews Section --}}
     <h3 class="reviews-header">Latest reviews left by you:</h3>
     <div class="reviews-container">
         <div class="review-card">
@@ -60,7 +60,7 @@
                 <i class="fas fa-star-half-alt"></i>
             </div>
         </div>
-        <!-- Add more review cards as needed -->
+        {{!-- Add more review cards as needed --}}
     </div>
 
     {{!-- Footer --}}

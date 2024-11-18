@@ -356,7 +356,7 @@ body {
 }
 
 .profile-info h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-weight: 700;
   font-size: 1.8em;
   color: #333;
@@ -421,7 +421,7 @@ body {
 }
 
 .stars {
-  color: #FFD700; /* Gold color for stars */
+  color: #ffd700; /* Gold color for stars */
 }
 /* Profile Info Box Styling */
 .info-box {
