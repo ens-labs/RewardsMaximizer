@@ -7,13 +7,18 @@ use crate::web::lib::establish_connection;
 pub fn router() -> Router<()> {
     Router::new()
         .route("/addCompany", post(self::post::add_company))
+        .route("/addCompany", get(self::get::add_company))
         .route("/searchCompany", get(self::get::search_company))
         .route("/viewCompanies", get(self::get::view_companies))
 }
 
 mod get {
     use super::*;
-    
+
+    pub async fn add_company() -> &'static str {
+        "Add company endpoint"
+    }
+
     pub async fn search_company(query: Option<String>) -> impl IntoResponse {
         use crate::web::schema::companies::dsl::*;
         let mut connection = establish_connection();
