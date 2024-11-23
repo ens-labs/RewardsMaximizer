@@ -8,12 +8,44 @@ use crate::web::lib::establish_connection;
 pub fn router() -> Router<()> {
     Router::new()
         .route("/addVendorDeals", post(self::post::add_vendor_deals))
+        .route("/searchVendorDealsByCompany", post(self::get::search_vendor_deals_by_company))
         .route("/viewVendorDeals", get(self::get::view_vendor_deals))
 
 }
 
 mod get {
     use super::*;
+
+    pub async fn search_vendor_deals_by_company(query: Option<String>) -> &'static str  {
+        "View Vendor deals endpoint"
+   /* 
+    -> impl IntoResponse {
+        use crate::web::schema::vendor_deals::dsl::*;
+        let mut connection = establish_connection();
+
+
+        
+        let query1 = "SELECT companies.name, vendor_deals.title, vendor_deals.description FROM companies JOIN vendor_deals ON vendor_deals.company_id = companies.company_id";
+        let query2 = match query {
+            Some(search) => format!("{} WHERE companies.name LIKE '%{}%'", query1, search),
+            None => query1.to_string(),
+        };
+
+    
+        let results = sql_query(query2).load::<VendorDeal>(&mut connection);
+
+
+
+        match results{
+            Ok(vendor_deals_list) => (StatusCode::OK, Json(vendor_deals_list)).into_response(),
+            Err(e) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Failed to retrieve data: {}", e),
+            )
+            .into_response(),
+        }
+        */
+    }
 
     pub async fn view_vendor_deals() -> &'static str  {
         "View Vendor deals endpoint"
