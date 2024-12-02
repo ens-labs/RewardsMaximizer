@@ -1,35 +1,34 @@
-import Controller from '@ember/controller';
-import { action } from '@ember/object';
-import { service } from '@ember/service';
-
-export default class Wallet extends Controller {
+// controllers/wallet.js
+export default class WalletController extends Controller {
   @service router;
 
-  // Navigate to home
   @action
-  home(event) {
-    event.preventDefault();
-    this.router.transitionTo('home');
-  }
+  async submitCard(event) {
+    event.preventDefault(); // Prevent form submission from refreshing the page
 
-  // Navigate to search
-  @action
-  search(event) {
-    event.preventDefault();
-    this.router.transitionTo('search');
-  }
+    // Collect the form data
+    const formData = new FormData(event.target);
+    const cardData = {
+      name: formData.get("cardName"),  // Name of the card
+      rtype: formData.get("iconChoice"),  // Get the card type from the icon choice select
+      icon: formData.get("iconChoice"),  // Icon choice (from select)
+      color: formData.get("cardColor"),  // Color (from input[type=color])
+    };
 
-  // Navigate to profile
-  @action
-  profile(event) {
-    event.preventDefault();
-    this.router.transitionTo('profile');
-  }
+    // Send the data to the backend
+    const response = await fetch('/add_card', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',  // Ensure the data is JSON
+      },
+      body: JSON.stringify(cardData),  // Convert the data to JSON
+    });
 
-  // Navigate to crowdsourcing
-  @action
-  crowdsourcing(event) {
-    event.preventDefault();
-    this.router.transitionTo('crowdsourcing');
+    if (response.ok) {
+      alert('Card added successfully!');
+      // Optionally, update the UI or reload the data
+    } else {
+      alert('Error adding card.');
+    }
   }
 }
