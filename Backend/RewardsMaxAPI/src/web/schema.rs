@@ -1,5 +1,3 @@
-// Manually put together, need to figure some stuff out
-
 diesel::table! {
     cards (card_id) {
         card_id -> Nullable<Integer>,
@@ -7,6 +5,8 @@ diesel::table! {
         created -> Text,
         name -> Text,
         r#type -> Text,
+        icon -> Text, // Add the icon field
+        color -> Text, // Add the color field
         updated -> Text,
     }
 }
@@ -115,9 +115,6 @@ diesel::table! {
     }
 }
 
-
-
-
 diesel::joinable!(cards -> companies (company_id));
 diesel::joinable!(rewards -> companies (company_id));
 diesel::joinable!(user_cards -> cards (card_id));
@@ -129,9 +126,6 @@ diesel::joinable!(comments -> users (user_id));
 diesel::joinable!(notifications -> users (user_id));
 diesel::joinable!(user_rewards -> rewards (reward_id));
 diesel::joinable!(user_rewards -> users (user_id));
-
-
-
 
 diesel::allow_tables_to_appear_in_same_query!(
     cards,

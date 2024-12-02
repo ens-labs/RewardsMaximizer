@@ -1,4 +1,4 @@
-//Allows visibility of app outside
+// Allows visibility of app outside
 pub use app::App;
 
 // Modules
@@ -14,6 +14,5 @@ mod recommendations;
 mod companies;
 mod vendor_deals;
 mod crowdsourcing;
-//pub mod db;
-//pub mod routes;
-//pub mod card;
+pub mod card;
+pub use crate::web::lib::establish_connection;
