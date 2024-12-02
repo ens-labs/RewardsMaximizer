@@ -1,7 +1,7 @@
-// controllers/wallet.js
-export default class WalletController extends Controller {
-  @service router;
+import Controller from '@ember/controller';
+import { action } from '@ember/object';
 
+export default class WalletController extends Controller {
   @action
   async submitCard(event) {
     event.preventDefault(); // Prevent form submission from refreshing the page
@@ -26,7 +26,13 @@ export default class WalletController extends Controller {
 
     if (response.ok) {
       alert('Card added successfully!');
-      // Optionally, update the UI or reload the data
+
+      // Fetch updated list of cards after adding the new card
+      const updatedResponse = await fetch('/cards');
+      const updatedCards = await updatedResponse.json();
+      
+      // Update the model with the updated cards
+      this.set('model', updatedCards);
     } else {
       alert('Error adding card.');
     }
