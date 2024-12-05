@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,11 +17,7 @@
         <div class="container d-flex justify-content-between align-items-center">
             <h1 class="header-logo">Rewards Maximizer <i class="fas fa-credit-card card-icon"></i></h1>
             <nav class="navbar-links">
-                {{!-- <button type="home" class="text-btn">Home</button> --}}
-                <button type="button" {{on "click" this.wallet}} class="text-btn">Wallet</button>
-                <button type="button" {{on "click" this.search}} class="text-btn">Search</button>
-                <button type="button" {{on "click" this.profile}} class="text-btn">Profile</button>
-                <button type="button" {{on "click" this.crowdsourcing}} class="navbar-button">User Feedback</button>
+                <DropdownMenu/>
             </nav>
         </div>
     </header>
@@ -56,5 +51,28 @@
         </div>
     </footer>
 
+    {{!-- Bootstrap for dropdown menu --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    {{!-- Initialize dropdown menu --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
+
+            var dropdownButton = document.getElementById('dropdownMenuButton');
+            dropdownButton.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+
+            // Ensure the dropdown button class is updated on page load
+            if (dropdownButton.classList.contains('show')) {
+                dropdownButton.classList.add('active');
+            } else {
+                dropdownButton.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>

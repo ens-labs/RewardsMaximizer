@@ -35,20 +35,19 @@ export default class Login extends Controller {
         },
         body: formBody,
       });
+      console.log(response);
 
       if (!response.ok) {
         throw new Error('Login failed');
       }
 
-      let data = await response.json();
-      console.log('Login successful:', data);
       this.router.transitionTo('home');
     } catch (error) {
       this.errorMessage = error.message || 'Error logging in';
     }
   }
 
-  @action 
+  @action
   handleRegistration(event) {
     event.preventDefault();
     this.router.transitionTo('registration');

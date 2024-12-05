@@ -4,35 +4,35 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 
 export default class Registration extends Controller {
-    @tracked username = '';
-    @tracked password = '';
-    @service router;
-    
-    @action
-    setEmail(event) {
-        this.email = event.target.value;
-    }
+  @tracked username = '';
+  @tracked password = '';
+  @service router;
 
-    @action
-    setUsername(event) {
-        this.username = event.target.value;
-    }
-    
-    @action
-    setPassword(event) {
-        this.password = event.target.value;
-    }
-    
-    @action
-    async handleRegistration(event) {
-        event.preventDefault();
-    
-        // const formBody = JSON.stringify({
-        //     email: this.email,
-        //     username: this.username,
-        //     password: this.password,
-        // });
-        
-        this.transitionTo('login');
-    }
+  @action
+  setEmail(event) {
+    this.email = event.target.value;
+  }
+
+  @action
+  setUsername(event) {
+    this.username = event.target.value;
+  }
+
+  @action
+  setPassword(event) {
+    this.password = event.target.value;
+  }
+
+  @action
+  async handleRegistration(event) {
+    event.preventDefault();
+
+    // const formBody = JSON.stringify({
+    //     email: this.email,
+    //     username: this.username,
+    //     password: this.password,
+    // });
+
+    this.transitionTo('login');
+  }
 }
