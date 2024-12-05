@@ -30,11 +30,32 @@ export default class WalletController extends Controller {
       // Fetch updated list of cards after adding the new card
       const updatedResponse = await fetch('/cards');
       const updatedCards = await updatedResponse.json();
-      
-      // Update the model with the updated cards
-      this.set('model', updatedCards);
+
+      console.log('Updated cards:', updatedCards);  // Log the updated cards
+      this.set('model', updatedCards);  // Update the Ember model with the updated cards
     } else {
       alert('Error adding card.');
+    }
+  }
+
+  @action
+  async deleteCard(cardId) {
+    // Send a DELETE request to remove the card
+    const response = await fetch(`/delete_card/${cardId}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      alert('Card deleted successfully!');
+
+      // Fetch updated list of cards after deletion
+      const updatedResponse = await fetch('/cards');
+      const updatedCards = await updatedResponse.json();
+
+      console.log('Updated cards:', updatedCards);  // Log the updated cards
+      this.set('model', updatedCards);  // Update the Ember model with the updated cards
+    } else {
+      alert('Error deleting card.');
     }
   }
 }
