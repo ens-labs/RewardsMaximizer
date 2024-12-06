@@ -7,5 +7,8 @@ module.exports = function (defaults) {
     // Add options here
   });
 
+
+  app.import('node_modules/jquery/dist/jquery.min.js');
+
   return app.toTree();
 };

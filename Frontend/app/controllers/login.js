@@ -40,7 +40,8 @@ export default class Login extends Controller {
       if (!response.ok) {
         throw new Error('Login failed');
       }
-
+      // Save username in session storage
+      sessionStorage.setItem('username', this.username);
       this.router.transitionTo('home');
     } catch (error) {
       this.errorMessage = error.message || 'Error logging in';

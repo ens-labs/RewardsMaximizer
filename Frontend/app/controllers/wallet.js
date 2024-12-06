@@ -2,6 +2,14 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 
 export default class WalletController extends Controller {
+  // Get session storage username
+  constructor() {
+    super(...arguments);
+    this.username = sessionStorage.getItem('username');
+    console.log(this.username);
+    sessionStorage.setItem('username', this.username);
+  }
+  
   @action
   async submitCard(event) {
     event.preventDefault(); // Prevent form submission from refreshing the page
