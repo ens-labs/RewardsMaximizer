@@ -493,3 +493,14 @@ body {
   border-radius: 5px;
   border: 1px solid #ddd;
 }
+
+.eye-icon-button {
+  height: 2.75rem; 
+  display: flex;
+  align-items: center;
+  margin-top: 0.8rem; 
+}
+.eye-icon {
+  font-size: 1rem; 
+}
+
