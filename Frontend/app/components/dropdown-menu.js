@@ -57,9 +57,11 @@ export default class DropdownMenuComponent extends Component{
     this.navigateTo('crowdsourcing', event);
   }
 
-  // Sign Out (TBD)
+  // Logout and navigate to login page
+  // Possibly need to modify API call to logout
     @action
-    signOut(event) {
-        this.navigateTo('login', event);
-    }
+    async signOut(event) {
+    await fetch('http://localhost:8080/logout', {});
+    this.navigateTo('login', event);
+  }
 }
