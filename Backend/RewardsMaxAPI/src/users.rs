@@ -4,20 +4,14 @@ use password_auth::verify_password;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, SqlitePool};
 use tokio::task;
+use crate::web::models::User;
+use crate::web::schema::users;
 
-#[derive(Clone, Serialize, Deserialize, FromRow)]
-pub struct User {
-    id: i64,
-    pub username: String,
-    password: String,
-}
 
-// Here we've implemented `Debug` manually to avoid accidentally logging the
-// password hash.
 impl std::fmt::Debug for User {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("User")
-            .field("id", &self.id)
+            .field("id", &self.user_id)
             .field("username", &self.username)
             .field("password", &"[redacted]")
             .finish()
@@ -25,10 +19,10 @@ impl std::fmt::Debug for User {
 }
 
 impl AuthUser for User {
-    type Id = i64;
+    type Id = i32;
 
     fn id(&self) -> Self::Id {
-        self.id
+        self.id()
     }
 
     fn session_auth_hash(&self) -> &[u8] {
@@ -73,25 +67,22 @@ impl AuthnBackend for Backend {
     type User = User;
     type Credentials = Credentials;
     type Error = Error;
-
     async fn authenticate(
         &self,
         creds: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
-        
-        let user: Option<Self::User> = sqlx::query_as("select * from users where username = ? ")
-            .bind(creds.username)
+        let user: Option<Self::User> = sqlx::query_as("SELECT * FROM users WHERE username = ?")
+            .bind(&creds.username)
             .fetch_optional(&self.db)
             .await?;
-
-        // Verifying the password is blocking and potentially slow, so we'll do so via
-        // `spawn_blocking`.
-        task::spawn_blocking(|| {
-            // We're using password-based authentication--this works by comparing our form
-            // input with an argon2 password hash.
-            Ok(user.filter(|user| verify_password(creds.password, &user.password).is_ok()))
-        })
-        .await?
+    
+        if let Some(ref user) = user {
+            if !verify_password(creds.password.clone(), &user.password).is_ok() {
+                return Ok(None); 
+            }
+        }
+    
+        Ok(user) 
     }
 
     async fn get_user(&self, user_id: &UserId<Self>) -> Result<Option<Self::User>, Self::Error> {

@@ -30,9 +30,9 @@ pub struct App {
 }
 
 impl App {
+
     pub async fn new() -> Result<Self, Box<dyn std::error::Error>> {
-        let db = SqlitePool::connect(":memory:").await?;
-        sqlx::migrate!().run(&db).await?;
+        let db = SqlitePool::connect("database/rewards_maximizer.db").await?;
 
         Ok(Self { db })
     }

@@ -50,33 +50,28 @@ mod post {
         messages: Messages,
         Json(creds): Json<Credentials>,
     ) -> impl IntoResponse {
+        // Authenticate the user
         let user = match auth_session.authenticate(creds.clone()).await {
-            Ok(Some(user)) => user,
-            Ok(None) => {
+            Ok(Some(user)) => user,               // User authenticated successfully
+            Ok(None) => {                         // Authentication failed
                 messages.error("Invalid credentials");
-
+    
                 let mut login_url = "/login".to_string();
                 if let Some(next) = creds.next {
                     login_url = format!("{}?next={}", login_url, next);
-                };
-
+                }
+    
                 return Redirect::to(&login_url).into_response();
             }
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         };
-
-        if auth_session.login(&user).await.is_err() {
-            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-        }
-
+    
+    
         messages.success(format!("Successfully logged in as {}", user.username));
-
-        if let Some(ref next) = creds.next {
-            Redirect::to(next)
-        } else {
-            Redirect::to("/")
-        }
-        .into_response()
+    
+        // Redirect to the specified next URL or home page
+        let redirect_to = creds.next.as_deref().unwrap_or("/");
+        Redirect::to(redirect_to).into_response()
     }
 
 

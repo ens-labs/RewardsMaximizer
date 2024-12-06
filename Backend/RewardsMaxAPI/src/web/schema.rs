@@ -49,7 +49,7 @@ diesel::table! {
     rewards (reward_id) {
         reward_id -> Nullable<Integer>,
         company_id -> Integer,
-        created -> Text,
+        created -> Nullable<Text>,
         description -> Text,
         name -> Text,
         updated -> Text,
