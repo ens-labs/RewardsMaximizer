@@ -1,9 +1,13 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { service } from '@ember/service';
-
 export default class CardDetailsController extends Controller {
-  @service router;
+// Get session storage username
+  constructor() {
+    super(...arguments);
+    this.username = sessionStorage.getItem('username');
+    console.log(this.username);
+    sessionStorage.setItem('username', this.username);
+  }
 
   rating = 0; // Store the rating state
 

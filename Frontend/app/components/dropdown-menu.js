@@ -62,6 +62,8 @@ export default class DropdownMenuComponent extends Component{
     @action
     async signOut(event) {
     await fetch('http://localhost:8080/logout', {});
+    // End session storage
+    sessionStorage.removeItem('username');
     this.navigateTo('login', event);
   }
 }
