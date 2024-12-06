@@ -14,7 +14,7 @@ pub fn router() -> Router<()> {
 
 mod get {
     use super::*;
-    
+
     pub async fn index() -> impl IntoResponse {
         IndexTemplate.into_response()
     }

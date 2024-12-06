@@ -3,23 +3,25 @@ use serde::{Deserialize, Serialize};
 use diesel::sql_types::Timestamp;
 use crate::web::schema;
 
-#[derive(Clone, Serialize, Deserialize, Queryable)]
+#[derive(Clone, Serialize, Deserialize, Insertable, Queryable, Selectable, Debug)]
 #[diesel(table_name = schema::users)]
 pub struct User {
     pub user_id: i32,
-    pub created: String,
+    pub created: Option<String>,
     pub email: String,
     pub password: String,
     pub updated: String,
     pub username: String,
 }
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, Clone, Debug)]
 #[diesel(table_name = schema::users)]
 pub struct NewUser {
     pub email: String,
     pub password: String,
     pub username: String,
+    pub created: String,
+    pub updated: String,
 }
 
 #[derive(Queryable, Selectable)]

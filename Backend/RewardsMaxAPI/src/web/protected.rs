@@ -1,8 +1,8 @@
 use askama::Template;
 use axum::{http::StatusCode, response::IntoResponse, routing::get, Router};
 use axum_messages::{Message, Messages};
-
-use crate::users::AuthSession;
+use axum_login::AuthSession;
+use crate::users::Backend;
 
 #[derive(Template)]
 #[template(path = "protected.html")]
@@ -18,7 +18,7 @@ pub fn router() -> Router<()> {
 mod get {
     use super::*;
 
-    pub async fn protected(auth_session: AuthSession, messages: Messages) -> impl IntoResponse {
+    pub async fn protected(auth_session: AuthSession<Backend>, messages: Messages) -> impl IntoResponse {
         match auth_session.user {
             Some(user) => ProtectedTemplate {
                 messages: messages.into_iter().collect(),

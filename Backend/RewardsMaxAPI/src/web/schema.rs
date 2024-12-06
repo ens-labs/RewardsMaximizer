@@ -34,10 +34,20 @@ diesel::table! {
     }
 }
 
+// diesel::table! {
+//     sessions (id) {
+//         id -> Integer,
+//         session_id -> Text,
+//         data -> Nullable<Text>,
+//         expires_at -> Nullable<String>,
+//     }
+// }
+
+
 diesel::table! {
     users (user_id) {
         user_id -> Integer,
-        created -> Text,
+        created -> Nullable<Text>,
         email -> Text,
         password -> Text,
         updated -> Text,

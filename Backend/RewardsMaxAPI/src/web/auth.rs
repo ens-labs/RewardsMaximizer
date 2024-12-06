@@ -8,8 +8,9 @@ use axum::{
 };
 use axum_messages::{Message, Messages};
 use serde::Deserialize;
-
-use crate::users::{AuthSession, Credentials};
+use axum_login::AuthSession;
+use crate::users::{Credentials};
+use crate::users::Backend;
 
 #[derive(Template)]
 #[template(path = "login.html")]
@@ -46,30 +47,42 @@ mod post {
     use super::*;
 
     pub async fn login(
-        mut auth_session: AuthSession,
+        mut auth_session: AuthSession<Backend>,
         messages: Messages,
-        Json(creds): Json<Credentials>,
+        Form(creds): Form<Credentials>,
     ) -> impl IntoResponse {
-        let user = match auth_session.authenticate(creds.clone()).await {
-            Ok(Some(user)) => user,
-            Ok(None) => {
-                messages.error("Invalid credentials");
 
-                let mut login_url = "/login".to_string();
-                if let Some(next) = creds.next {
-                    login_url = format!("{}?next={}", login_url, next);
-                };
+        println!("Starting authentication...");
 
-                return Redirect::to(&login_url).into_response();
-            }
-            Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-        };
-
-        if auth_session.login(&user).await.is_err() {
-            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        match auth_session.authenticate(creds.clone()).await {
+            Ok(Some(T)) => println!("Test passed. User: {:?}", T),
+            Ok(None) => println!("Test passed. No user found."),
+            Err(e) => println!("Test failed. Error: {:?}", e),
         }
 
-        messages.success(format!("Successfully logged in as {}", user.username));
+        // let user = match auth_session.authenticate(creds.clone()).await {
+        //     Ok(Some(user)) => {
+        //         println!("User authenticated successfully: {:?}", user); // Log user details
+        //         user
+        //     }
+        //     Ok(None) => {
+        //         messages.error("Invalid credentials");
+
+        //         let mut login_url = "/login".to_string();
+        //         if let Some(next) = creds.next {
+        //             login_url = format!("{}?next={}", login_url, next);
+        //         };
+
+        //         return Redirect::to(&login_url).into_response();
+        //     }
+        //     Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        // };
+
+        // if auth_session.login(&user).await.is_err() {
+        //     return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        // }
+
+        //messages.success(format!("Successfully logged in as {}", user.username));
 
         if let Some(ref next) = creds.next {
             Redirect::to(next)
@@ -126,7 +139,7 @@ mod get {
         }
     }
 
-    pub async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
+    pub async fn logout(mut auth_session: AuthSession<Backend>) -> impl IntoResponse {
         match auth_session.logout().await {
             Ok(_) => Redirect::to("/login").into_response(),
             Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),

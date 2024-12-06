@@ -13,7 +13,7 @@ pub fn router() -> Router<()> {
 
 mod get {
     //use super::*;
-    
+
     pub async fn contact_us() -> &'static str {
         "Contact us endpoint"
     }

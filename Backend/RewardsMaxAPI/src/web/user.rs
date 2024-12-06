@@ -3,6 +3,7 @@ use serde::Deserialize;
 use diesel::{prelude::*, sqlite::SqliteConnection};
 use crate::web::models::{NewUser, NewCard, UserCard};
 use crate::web::lib::establish_connection;
+use password_auth::generate_hash;
 //use crate::users::AuthSession;
 
 pub fn router() -> Router<()> {
@@ -18,7 +19,7 @@ pub fn router() -> Router<()> {
 
 mod get {
     use super::*;
-    
+
     pub async fn dashboard() -> &'static str {
         "Dashboard endpoint"
     }
@@ -44,11 +45,13 @@ mod get {
 mod post {
     use super::*;
 
-    pub async fn signup_user(Json(new_user): Json<NewUser>) -> impl IntoResponse {
+    pub async fn signup_user(Json(mut new_user): Json<NewUser>) -> impl IntoResponse {
         use crate::web::schema::users::dsl::*;
-
         let mut connection = establish_connection();
-    
+
+        let hashed_password = generate_hash(&new_user.password);
+        new_user.password = hashed_password;
+
         match diesel::insert_into(users)
             .values(&new_user)
             .execute(&mut connection)

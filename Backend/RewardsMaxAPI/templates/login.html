@@ -1,48 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Rewards Maximizer</title>
+<html>
+  <head>
+    <title>Login</title>
+    <style>
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
 
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
-    
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <body>
+    <ul>
+      {% for message in messages %}
+      <li>
+        <span><strong>{{ message }}</strong></span>
+      </li>
+      {% endfor %}
+    </ul>
 
-    <link rel="stylesheet" href="static/styles.css">
-</head>
-<body>
-    <div class="login-container">
-        <h1 class="logo">Rewards Maximizer <i class="fas fa-credit-card"></i></h1>
-        <form class="login-form">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Enter Email">
-            
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter Password">
-            
-            <button type="submit" class="login-btn">Sign In</button>
-            
-            <a href="#" class="forgot-password">Forgot password?</a>
-        </form>
-        <p class="signup-link">New to Rewards Maximizer? <a href="#">Join now</a></p>
-    </div>
-    <footer class="footer">
-        <div class="footer-content">
-            <h2 class="footer-logo">Rewards Maximizer <i class="fas fa-credit-card"></i></h2>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-            </div>
-            <div class="footer-links">
-                <a href="#">Contact Us</a>
-                <a href="#">About Us</a>
-            </div>
-        </div>
-    </footer>
-</body>
+    <form method="post">
+      <fieldset>
+        <legend>User login</legend>
+        <p>
+          <label for="username">Username</label>
+          <input name="username" id="username" value="username" />
+        </p>
+        <p>
+          <label for="password">Password</label>
+          <input
+            name="password"
+            id="password"
+            type="password"
+            value="password"
+          />
+        </p>
+      </fieldset>
+
+      <input type="submit" value="login" />
+
+      {% if let Some(next) = next %}
+      <input type="hidden" name="next" value="{{next}}" />
+      {% endif %}
+    </form>
+  </body>
 </html>

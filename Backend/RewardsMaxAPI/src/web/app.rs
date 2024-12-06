@@ -5,6 +5,7 @@ use axum_login:: {
 };
 
 use axum_messages::MessagesManagerLayer;
+use std::error::Error;
 use sqlx::SqlitePool;
 use time::Duration;
 use tokio:: { signal, task::AbortHandle};
@@ -18,6 +19,10 @@ use tower_http::cors::CorsLayer;
 use http::header::{CONTENT_TYPE};
 use tower_http::cors::Any;
 use http::Method;
+use diesel::r2d2::{self, ConnectionManager};
+use diesel::SqliteConnection;
+use std::sync::Arc;
+use crate::web::lib::establish_connection;
 //use crate::web::recommendations; // Import the recommendations module
 
 use crate:: {
@@ -27,9 +32,11 @@ use crate:: {
 
 pub struct App {
     db: SqlitePool,
+    //db: diesel::SqliteConnection,
 }
 
 impl App {
+
     pub async fn new() -> Result<Self, Box<dyn std::error::Error>> {
         let db = SqlitePool::connect(":memory:").await?;
         sqlx::migrate!().run(&db).await?;
@@ -63,7 +70,7 @@ impl App {
         //
         // This combines the session layer with our backend to establish the auth
         // service which will provide the auth session as a request extension.
-        let backend = Backend::new(self.db);
+        let backend = Backend::new();
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         let cors = CorsLayer::new()
