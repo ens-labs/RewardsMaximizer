@@ -1,14 +1,14 @@
 diesel::table! {
     cards (card_id) {
-        card_id -> Nullable<Integer>,
+        card_id -> Integer,
         company_id -> Integer,
         name -> Text,
         r#type -> Text,
-        icon -> Text,
-        color -> Text,
-        benefits -> Text,
+        icon -> Nullable<Text>,
+        color -> Nullable<Text>,
+        benefits -> Nullable<Text>,
         category -> Text,
-        rating -> Integer,
+        rating -> Nullable<Integer>,
         created -> Text,
         updated -> Text,
     }

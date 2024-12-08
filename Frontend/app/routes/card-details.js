@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 export default class CardDetailsRoute extends Route {
   async model(params) {
     try {
-      const response = await fetch(`http://localhost:8080/cards/${params.cardId}`);
+      const response = await fetch(`http://localhost:8080/card/${params.cardId}`);
       if (response.ok) {
         const cardDetails = await response.json();
         return cardDetails; // Return the card details as the model for the route

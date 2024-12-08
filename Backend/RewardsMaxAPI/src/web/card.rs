@@ -10,74 +10,82 @@ use diesel::r2d2::{ConnectionManager, Pool};
 use crate::web::models::{NewCard, Card};
 use crate::web::schema::cards;
 
-// Define a type alias for the database pool
 type DbPool = Pool<ConnectionManager<SqliteConnection>>;
 
-// Router for card-related routes
 pub fn router() -> Router {
     Router::new()
         .route("/add_card", post(add_card))
         .route("/cards", get(get_cards))
+        .route("/card/:cardId", get(get_card_by_id))
         .route("/delete_card/:id", delete(delete_card))
 }
 
-// POST method to add a card
 #[axum::debug_handler]
 async fn add_card(
     Extension(pool): Extension<DbPool>,
     Json(new_card): Json<NewCard>,
-) -> impl IntoResponse {
-    let mut conn = pool.get().expect("Failed to get DB connection");
+) -> Result<impl IntoResponse, StatusCode> {
+    let mut conn = pool.get().map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
     match diesel::insert_into(cards::table)
         .values(&new_card)
+        .returning(Card::as_select())
         .get_result::<Card>(&mut conn)
     {
-        Ok(card) => (StatusCode::CREATED, Json(card)).into_response(),
-        Err(e) => {
-            eprintln!("Error inserting card: {:?}", e);
-            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to add card").into_response()
-        }
+        Ok(card) => Ok((StatusCode::CREATED, Json(card)).into_response()),
+        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
     }
 }
 
-// GET method to retrieve all cards
 #[axum::debug_handler]
 async fn get_cards(
     Extension(pool): Extension<DbPool>,
-) -> impl IntoResponse {
-    let mut conn = pool.get().expect("Failed to get DB connection");
+) -> Result<impl IntoResponse, StatusCode> {
+    let mut conn = pool.get().map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-    match cards::table.load::<Card>(&mut conn) {
-        Ok(results) => Json(results).into_response(),
-        Err(e) => {
-            eprintln!("Error loading cards: {:?}", e);
-            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to fetch cards").into_response()
-        }
+    match cards::table
+        .select(Card::as_select())
+        .load::<Card>(&mut conn)
+    {
+        Ok(results) => Ok(Json(results).into_response()),
+        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
     }
 }
 
-// DELETE method to remove a card by ID
+#[axum::debug_handler]
+async fn get_card_by_id(
+    Path(card_id): Path<i32>,
+    Extension(pool): Extension<DbPool>,
+) -> Result<impl IntoResponse, StatusCode> {
+    let mut conn = pool.get().map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    match cards::table
+        .filter(cards::card_id.eq(card_id))
+        .select(Card::as_select())
+        .first::<Card>(&mut conn)
+    {
+        Ok(card) => Ok(Json(card).into_response()),
+        Err(_) => Err(StatusCode::NOT_FOUND),
+    }
+}
+
 #[axum::debug_handler]
 async fn delete_card(
     Path(card_id_val): Path<i32>,
     Extension(pool): Extension<DbPool>,
-) -> impl IntoResponse {
-    let mut conn = pool.get().expect("Failed to get DB connection");
+) -> Result<impl IntoResponse, StatusCode> {
+    let mut conn = pool.get().map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
     match diesel::delete(cards::table.filter(cards::card_id.eq(card_id_val)))
         .execute(&mut conn)
     {
         Ok(affected_rows) => {
             if affected_rows > 0 {
-                StatusCode::NO_CONTENT.into_response()
+                Ok(StatusCode::NO_CONTENT.into_response())
             } else {
-                (StatusCode::NOT_FOUND, "Card not found").into_response()
+                Err(StatusCode::NOT_FOUND)
             }
         }
-        Err(e) => {
-            eprintln!("Error deleting card: {:?}", e);
-            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to delete card").into_response()
-        }
+        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
     }
 }

@@ -10,25 +10,24 @@ export default class CardDetailsController extends Controller {
     super(...arguments);
     this.username = sessionStorage.getItem('username') || 'Guest';
     sessionStorage.setItem('username', this.username);
+    this.loadCardDetails(); // Fetch card details when the controller is initialized
   }
 
-  // Lifecycle hook to ensure card data is loaded when the model changes
-  @action
   loadCardDetails() {
-    if (this.model) {
-      this.card = this.model; // This will be set to the model data from the route
-      this.rating = this.model.rating || 0; // Initialize the rating if available
+    try {
+      this.card = this.model; // Use model data directly
+      this.rating = this.model.rating || 0; // Set initial rating
+    } catch (error) {
+      console.error('Error setting card details:', error);
     }
   }
 
-  // Update the card's rating
   @action
   async setRating(newRating) {
     this.rating = newRating;
 
     try {
-      const cardId = this.model.cardId; // cardId should match the key in the API endpoint
-      const response = await fetch(`http://localhost:8080/cards/${cardId}/rating`, {
+      const response = await fetch(`http://localhost:8080/cards/${this.card.cardId}/rating`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rating: this.rating }),

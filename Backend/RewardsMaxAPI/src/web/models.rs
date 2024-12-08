@@ -36,20 +36,20 @@ pub struct UserCard {
     pub user_id: i32,
 }
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
+#[derive(Queryable, Selectable, Serialize, Deserialize, Debug)]
 #[diesel(table_name = schema::cards)]
 pub struct Card {
-    pub card_id: Option<i32>,
-    pub company_id: i32,
-    pub name: String,
-    pub r#type: String,
-    pub icon: String,
-    pub color: String,
-    pub benefits: String,
-    pub category: String,
-    pub rating: Option<i32>,
-    pub created: String,
-    pub updated: String,
+    pub card_id: i32,                // Primary key
+    pub company_id: i32,             // Foreign key
+    pub name: String,                // Non-nullable
+    pub r#type: String,              // Non-nullable
+    pub icon: Option<String>,        // Nullable
+    pub color: Option<String>,       // Nullable
+    pub benefits: Option<String>,    // Nullable
+    pub category: String,            // Non-nullable
+    pub rating: Option<i32>,         // Nullable
+    pub created: String,             // Non-nullable
+    pub updated: String,             // Non-nullable
 }
 
 #[derive(Insertable, Serialize, Deserialize, Debug)]
@@ -58,10 +58,10 @@ pub struct NewCard {
     pub company_id: i32,
     pub name: String,
     pub r#type: String,
-    pub icon: String,
-    pub color: String,
-    pub benefits: String, 
-    pub category: String,  
+    pub icon: Option<String>,        // Nullable
+    pub color: Option<String>,       // Nullable
+    pub benefits: Option<String>,    // Nullable
+    pub category: String,
     pub rating: Option<i32>,      
     pub created: String,
     pub updated: String,
