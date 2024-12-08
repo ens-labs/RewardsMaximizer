@@ -12,8 +12,6 @@ use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::SqliteStore;
 use diesel::prelude::*;
 use diesel::r2d2::{ConnectionManager, Pool}; // Import Diesel's connection pool
-use dotenvy::dotenv;
-use std::env;
 use tower_http::services::ServeDir;
 use tower_http::cors::CorsLayer;
 use http::header::{CONTENT_TYPE};

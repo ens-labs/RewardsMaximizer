@@ -1,11 +1,10 @@
 use async_trait::async_trait;
 use axum_login::{AuthUser, AuthnBackend, UserId};
 use password_auth::verify_password;
-use serde::{Deserialize, Serialize};
-use sqlx::{FromRow, SqlitePool};
+use serde::{Deserialize};
+use sqlx::{SqlitePool};
 use tokio::task;
 use crate::web::models::User;
-use crate::web::schema::users;
 
 
 impl std::fmt::Debug for User {

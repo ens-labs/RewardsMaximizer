@@ -1,14 +1,12 @@
 use axum::{routing::get, routing::post, Router, Json, response::IntoResponse};
-use serde::Deserialize;
-use diesel::{prelude::*, sqlite::SqliteConnection};
+use diesel::{prelude::*};
 use crate::web::models::{NewUser, NewCard, UserCard};
 use crate::web::lib::establish_connection;
 use password_auth::generate_hash;
-//use crate::users::AuthSession;
 
 pub fn router() -> Router<()> {
     Router::new()
-        .route("/signup", post(self::post::signup_user)) // Udpate and include auth session
+        .route("/signup", post(self::post::signup_user))
         .route("/user/dashboard", get(self::get::dashboard)) //update
         .route("/user/cards", get(self::get::cards)) //update for logged-in user: /:user_id/cards
         .route("/user/addCard", get(self::get::add_card)) // update
@@ -19,7 +17,7 @@ pub fn router() -> Router<()> {
 
 mod get {
     use super::*;
-    
+
     pub async fn dashboard() -> &'static str {
         "Dashboard endpoint"
     }

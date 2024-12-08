@@ -22,24 +22,25 @@ export default class Login extends Controller {
   async handleLogin(event) {
     event.preventDefault();
 
-    const formBody = JSON.stringify({
-      username: this.username,
-      password: this.password,
-    });
+    // const formBody = JSON.stringify({
+    //   username: this.username,
+    //   password: this.password,
+    // });
 
     try {
-      let response = await fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: formBody,
-      });
-      console.log(response);
+      // COMMENTED OUT SO IT DOESNT BREAK BACKEND(current login API call causes stack overflow)
+      // let response = await fetch('http://localhost:8080/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: formBody,
+      // });
+      // console.log(response);
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
+      // if (!response.ok) {
+      //   throw new Error('Login failed');
+      // }
       // Save username in session storage
       sessionStorage.setItem('username', this.username);
       this.router.transitionTo('home');

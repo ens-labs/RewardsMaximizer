@@ -1,5 +1,4 @@
 use axum::{routing::get, routing::post, Router, Json, response::IntoResponse,  http::StatusCode};
-use serde::Deserialize;
 use diesel::{sql_query, prelude::*};
 use crate::web::models::{NewCompany, Company};
 use crate::web::lib::establish_connection;
@@ -20,7 +19,7 @@ mod get {
     }
 
     pub async fn search_company(query: Option<String>) -> impl IntoResponse {
-        use crate::web::schema::companies::dsl::*;
+        //use crate::web::schema::companies::dsl::*;
         let mut connection = establish_connection();
 
 
@@ -49,7 +48,7 @@ mod get {
     // Able to read from DB with straight SQL, plz leave it alone
     // diesel -> NO BUENO, NO LIKE!
     pub async fn view_companies() -> impl IntoResponse {
-        use crate::web::schema::companies::dsl::*;
+        //use crate::web::schema::companies::dsl::*;
         let mut connection = establish_connection();
 
         let results = sql_query("SELECT * FROM companies").load::<Company>(&mut connection); 

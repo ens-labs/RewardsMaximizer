@@ -1,7 +1,6 @@
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
-use crate::web::models::{Card, NewCard}; // Ensure to import models if needed
 
 // Function to establish a connection to the database using an environment variable for the database URL.
 pub fn establish_connection() -> SqliteConnection {

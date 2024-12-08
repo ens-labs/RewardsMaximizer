@@ -1,7 +1,6 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
-use diesel::sql_types::Timestamp;
-use sqlx::{FromRow, SqlitePool};
+use sqlx::{FromRow};
 use crate::web::schema;
 
 #[derive(Clone, Serialize, Deserialize, Insertable, Queryable, Selectable, FromRow)]

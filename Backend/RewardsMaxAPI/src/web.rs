@@ -15,4 +15,3 @@ mod companies;
 mod vendor_deals;
 mod crowdsourcing;
 pub mod card;
-pub use crate::web::lib::establish_connection;

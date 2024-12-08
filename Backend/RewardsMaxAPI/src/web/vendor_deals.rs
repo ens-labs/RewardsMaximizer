@@ -1,7 +1,6 @@
 use axum::{routing::get, routing::post, Router, Json, response::IntoResponse,  http::StatusCode};
-use serde::Deserialize;
-use diesel::{sql_query, prelude::*};
-use crate::web::models::{NewVendorDeal, VendorDeal};
+use diesel::{prelude::*};
+use crate::web::models::{NewVendorDeal};
 use crate::web::lib::establish_connection;
 
 
@@ -14,7 +13,7 @@ pub fn router() -> Router<()> {
 }
 
 mod get {
-    use super::*;
+    //use super::*;
 
     pub async fn search_vendor_deals_by_company(query: Option<String>) -> &'static str  {
         "View Vendor deals endpoint"
