@@ -33,16 +33,13 @@
                 {{#if this.errorMessage}}
                     <div class="error">{{this.errorMessage}}</div>
                 {{/if}}
-                <div class="dropdown mt-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Select a Credit Card
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Chase Sapphire Preferred</a></li>
-                        <li><a class="dropdown-item" href="#">American Express Gold Card</a></li>
-                        <li><a class="dropdown-item" href="#">Capital One Venture Rewards</a></li>
-                    </ul>
+                <div class="mt-3">
+                    <select class="form-select" id="creditCardSelect" aria-label="Select a Credit Card">
+                        <option selected>Select a Credit Card</option>
+                        <option value="Chase Sapphire Preferred">Chase Sapphire Preferred</option>
+                        <option value="American Express Gold Card">American Express Gold Card</option>
+                        <option value="Capital One Venture Rewards">Capital One Venture Rewards</option>
+                    </select>
                 </div>
                 <div class="mt-3">
                     <textarea id="insights" style="resize: none;" placeholder="Share your insights..." rows="15"
@@ -60,6 +57,7 @@
                     </div>
                 </div>
                 <div>
+                    {{!-- {{on "click" this.submitRecommendation}} --}}
                     <button class="btn btn-primary" type="button">Submit</button>
                 </div>
             </div>
