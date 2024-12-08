@@ -16,10 +16,12 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
     <style>
+      /* Sticky Footer CSS */ html, body { height: 100%; margin: 0; display:
+      flex; flex-direction: column; } .container { flex-grow: 1; }
       .generic-card-icon { font-size: 3em; color: white; display: flex;
       justify-content: center; align-items: center; height: 100px;
-      border-radius: 8px; } .bg-chase { background-color: #0074cc; } .bg-amazon
-      { background-color: #ff9900; } .bg-sapphire { background-color: #0a4e90; }
+      border-radius: 8px; } footer { background-color: #333; color: white;
+      padding: 1rem 0; text-align: center; }
     </style>
   </head>
 
@@ -27,7 +29,8 @@
     {{! Header }}
     <header class="header bg-dark text-white py-3">
       <div class="container d-flex justify-content-between align-items-center">
-        <h1 class="header-logo">Rewards Maximizer
+        <h1 class="header-logo">
+          Rewards Maximizer
           <i class="fas fa-credit-card card-icon"></i>
         </h1>
         <nav class="navbar-links">
@@ -44,22 +47,40 @@
           <div class="col-md-4 mb-4">
             <LinkTo
               @route="card-details"
-              @model={{card}}
+              @model={{card.card_id}}
               class="text-decoration-none"
             >
               <div class="card shadow-sm text-center">
-                <div class="generic-card-icon {{card.bgColorClass}}">
-                  <i class="{{card.iconClass}}"></i>
+                <div
+                  class="generic-card-icon"
+                  style="background-color: {{if
+                    card.color
+                    card.color
+                    '#cccccc'
+                  }};"
+                >
+                  <i
+                    class="{{if card.icon card.icon 'fa-question-circle'}}"
+                  ></i>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">{{card.cardName}}</h5>
-                  <p class="card-text"><strong
-                    >{{card.cardBenefits}}</strong></p>
+                  <h5 class="card-title">{{if
+                      card.name
+                      card.name
+                      "Unnamed Card"
+                    }}</h5>
+                  <p class="card-text">{{if
+                      card.type
+                      card.type
+                      "Unknown Type"
+                    }}</p>
                   <button
                     class="btn btn-danger"
                     type="button"
-                    {{on "click" (fn this.deleteCard card.cardId)}}
-                  >Delete Card</button>
+                    {{on "click" (fn this.deleteCard card.card_id)}}
+                  >
+                    Delete Card
+                  </button>
                 </div>
               </div>
             </LinkTo>
@@ -71,7 +92,9 @@
         data-bs-toggle="modal"
         data-bs-target="#addCardModal"
         type="button"
-      >Add New Card</button>
+      >
+        Add New Card
+      </button>
     </div>
 
     {{! Modal for Adding a New Card }}
@@ -106,17 +129,14 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="cardType" class="form-label">Card Type</label>
-                <select
-                  id="cardType"
-                  class="form-select"
-                  name="cardType"
+                <label for="cardBenefits" class="form-label">Card Benefits</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cardBenefits"
+                  name="cardBenefits"
                   required
-                >
-                  <option value="Credit">Credit</option>
-                  <option value="Debit">Debit</option>
-                  <option value="Prepaid">Prepaid</option>
-                </select>
+                />
               </div>
               <div class="mb-3">
                 <label for="iconChoice" class="form-label">Icon Choice</label>
@@ -143,7 +163,9 @@
                   required
                 />
               </div>
-              <button type="submit" class="btn btn-primary w-100">Add Card</button>
+              <button type="submit" class="btn btn-primary w-100">
+                Add Card
+              </button>
             </form>
           </div>
         </div>
@@ -152,8 +174,10 @@
 
     {{! Footer }}
     <footer class="footer bg-dark text-white py-3 mt-auto">
-      <h5 class="footer-logo">Rewards Maximizer
-        <i class="fas fa-credit-card card-icon"></i></h5>
+      <h5 class="footer-logo">
+        Rewards Maximizer
+        <i class="fas fa-credit-card card-icon"></i>
+      </h5>
       <div class="social-icons">
         <a href="#"><i class="fab fa-twitter"></i></a>
         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -172,11 +196,11 @@
     ></script>
     {{! Initialize dropdown menu }}
     <script>
-      document.addEventListener('DOMContentLoaded', function() { var
-      dropdownElementList =
-      [].slice.call(document.querySelectorAll('.dropdown-toggle')) var
-      dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-      return new bootstrap.Dropdown(dropdownToggleEl) }) });
+      document.addEventListener('DOMContentLoaded', function () { var
+      dropdownElementList = [].slice.call(
+      document.querySelectorAll('.dropdown-toggle') ); var dropdownList =
+      dropdownElementList.map(function (dropdownToggleEl) { return new
+      bootstrap.Dropdown(dropdownToggleEl); }); });
     </script>
   </body>
 </html>

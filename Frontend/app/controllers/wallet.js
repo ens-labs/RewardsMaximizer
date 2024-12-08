@@ -8,13 +8,30 @@ export default class WalletController extends Controller {
     this.username = sessionStorage.getItem('username') || '';
     console.log(this.username);
     sessionStorage.setItem('username', this.username);
+    this.loadInitialCards(); // Load cards on initialization
+  }
+
+  // Fetch the cards when the controller is initialized
+  async loadInitialCards() {
+    try {
+      const response = await fetch('http://localhost:8080/cards');
+      if (response.ok) {
+        const initialCards = await response.json();
+        console.log('Initial card list:', initialCards);
+        this.set('model', initialCards);
+      } else {
+        console.error('Failed to fetch initial cards.');
+      }
+    } catch (error) {
+      console.error('Network error while fetching initial cards:', error);
+    }
   }
 
   // Action to handle adding a card
   @action
   async submitCard(event) {
     event.preventDefault();
-  
+
     const formData = new FormData(event.target);
     const cardData = {
       name: formData.get('cardName') || 'Default Name', // Default name
@@ -25,14 +42,14 @@ export default class WalletController extends Controller {
       updated: new Date().toISOString(),
       company_id: 1, // Replace with dynamic company ID if needed
     };
-  
+
     try {
       const response = await fetch('http://localhost:8080/add_card', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cardData),
       });
-  
+
       if (response.ok) {
         alert('Card added successfully!');
         await this.updateCards(); // Refresh the card list
@@ -45,7 +62,7 @@ export default class WalletController extends Controller {
       alert('An error occurred while adding the card.');
     }
   }
-  
+
   // Action to handle deleting a card
   @action
   async deleteCard(cardId) {
@@ -84,5 +101,5 @@ export default class WalletController extends Controller {
     } catch (error) {
       console.error('Network error:', error);
     }
-  }  
+  }
 }
