@@ -37,20 +37,23 @@ pub struct UserCard {
     pub user_id: i32,
 }
 
-#[derive(Queryable, Serialize, Deserialize, Debug)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
 #[diesel(table_name = schema::cards)]
 pub struct Card {
-    pub card_id: Option<i32>,  // Make card_id optional to handle nullable
+    pub card_id: Option<i32>,
     pub company_id: i32,
-    pub created: String,
     pub name: String,
     pub r#type: String,
     pub icon: String,
     pub color: String,
+    pub benefits: String,
+    pub category: String,
+    pub rating: Option<i32>,
+    pub created: String,
     pub updated: String,
 }
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, Debug)]
+#[derive(Insertable, Serialize, Deserialize, Debug)]
 #[diesel(table_name = schema::cards)]
 pub struct NewCard {
     pub company_id: i32,
@@ -58,7 +61,10 @@ pub struct NewCard {
     pub r#type: String,
     pub icon: String,
     pub color: String,
-    pub created: String, 
+    pub benefits: String, 
+    pub category: String,  
+    pub rating: Option<i32>,      
+    pub created: String,
     pub updated: String,
 }
 
