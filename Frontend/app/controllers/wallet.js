@@ -2,68 +2,87 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 
 export default class WalletController extends Controller {
-  // Get session storage username
+  // Initialize username from sessionStorage or default to an empty string
   constructor() {
     super(...arguments);
-    this.username = sessionStorage.getItem('username');
+    this.username = sessionStorage.getItem('username') || '';
     console.log(this.username);
     sessionStorage.setItem('username', this.username);
   }
-  
+
+  // Action to handle adding a card
   @action
   async submitCard(event) {
-    event.preventDefault(); // Prevent form submission from refreshing the page
-
-    // Collect the form data
+    event.preventDefault();
+  
     const formData = new FormData(event.target);
     const cardData = {
-      name: formData.get('cardName'), // Name of the card
-      rtype: formData.get('iconChoice'), // Get the card type from the icon choice select
-      icon: formData.get('iconChoice'), // Icon choice (from select)
-      color: formData.get('cardColor'), // Color (from input[type=color])
+      name: formData.get('cardName') || 'Default Name', // Default name
+      type: formData.get('cardType') || 'Credit', // Ensure `type` is a valid card type
+      icon: formData.get('iconChoice') || 'fa-credit-card', // Ensure icon matches a valid choice
+      color: formData.get('cardColor') || '#000000', // Default color
+      created: new Date().toISOString(),
+      updated: new Date().toISOString(),
+      company_id: 1, // Replace with dynamic company ID if needed
     };
-
-    // Send the data to the backend
-    const response = await fetch('/add_card', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Ensure the data is JSON
-      },
-      body: JSON.stringify(cardData), // Convert the data to JSON
-    });
-
-    if (response.ok) {
-      alert('Card added successfully!');
-
-      // Fetch updated list of cards after adding the new card
-      const updatedResponse = await fetch('/cards');
-      const updatedCards = await updatedResponse.json();
-
-      console.log('Updated cards:', updatedCards); // Log the updated cards
-      this.set('model', updatedCards); // Update the Ember model with the updated cards
-    } else {
-      alert('Error adding card.');
+  
+    try {
+      const response = await fetch('http://localhost:8080/add_card', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cardData),
+      });
+  
+      if (response.ok) {
+        alert('Card added successfully!');
+        await this.updateCards(); // Refresh the card list
+      } else {
+        const error = await response.text();
+        alert(`Error adding card: ${error}`);
+      }
+    } catch (error) {
+      console.error('Network error while adding card:', error);
+      alert('An error occurred while adding the card.');
     }
   }
-
+  
+  // Action to handle deleting a card
   @action
   async deleteCard(cardId) {
-    // Send a DELETE request to remove the card
-    const response = await fetch(`/delete_card/${cardId}`, {
-      method: 'DELETE',
-    });
+    try {
+      const response = await fetch(`http://localhost:8080/delete_card/${cardId}`, {
+        method: 'DELETE',
+      });
 
-    if (response.ok) {
-      alert('Card deleted successfully!');
-
-      // Fetch updated list of cards after deletion
-      const updatedResponse = await fetch('/cards');
-      const updatedCards = await updatedResponse.json();
-
-      console.log('Updated cards:', updatedCards); // Log the updated cards
-      this.set('model', updatedCards); // Update the Ember model with the updated cards
-    } else {
-      alert('Error deleting card.');
+      if (response.ok) {
+        alert('Card deleted successfully!');
+        await this.updateCards(); // Refresh the card list
+      } else {
+        const error = await response.text(); // Read error response
+        alert(`Error deleting card: ${error}`); // Display the error
+      }
+    } catch (error) {
+      console.error('Network error while deleting card:', error); // Log network error
+      alert('An error occurred while deleting the card.');
     }
   }
+
+  // Fetch the latest cards and update the model
+  async updateCards() {
+    try {
+      const response = await fetch('http://localhost:8080/cards');
+      if (response.ok) {
+        const updatedCards = await response.json();
+        console.log('Updated card list:', updatedCards);
+        updatedCards.forEach((card, index) => {
+          console.log(`Card ${index}:`, card);
+        });
+        this.set('model', updatedCards);
+      } else {
+        console.error('Failed to fetch cards.');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+    }
+  }  
 }

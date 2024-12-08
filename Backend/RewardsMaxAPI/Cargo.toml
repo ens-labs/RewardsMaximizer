@@ -8,7 +8,7 @@ publish = false
 askama = { version = "0.12.1", features = ["with-axum"] }
 askama_axum = "0.4.0"
 async-trait = "0.1.74"
-axum = "0.7.0"
+axum = { version = "0.7.0", features = ["macros"] }
 axum-login = { version = "0.16" }
 axum-messages = "0.7.0"
 http = "1.0.0"
@@ -25,7 +25,7 @@ tower-sessions = { version = "0.13.0", default-features = false, features = [
 ] }
 tower-sessions-sqlx-store = { version = "0.14.0", features = ["sqlite"] }
 thiserror = "1.0.56"
-diesel = { version = "2.2.0", features = ["sqlite", "chrono", "returning_clauses_for_sqlite_3_35"] }
+diesel = { version = "2.2.0", features = ["sqlite", "chrono", "returning_clauses_for_sqlite_3_35","r2d2"] }
 dotenvy = "0.15"
 chrono = { version = "0.4", features = ["serde"] }
 tower-http = {version = "0.6.1", features=["fs", "cors"]}

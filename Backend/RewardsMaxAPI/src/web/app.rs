@@ -3,14 +3,15 @@ use axum_login:: {
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
-
+use axum::Extension;
 use axum_messages::MessagesManagerLayer;
-use sqlx::SqlitePool;
+use sqlx::SqlitePool; // Retained for session storage
 use time::Duration;
 use tokio:: { signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::SqliteStore;
 use diesel::prelude::*;
+use diesel::r2d2::{ConnectionManager, Pool}; // Import Diesel's connection pool
 use dotenvy::dotenv;
 use std::env;
 use tower_http::services::ServeDir;
@@ -18,30 +19,38 @@ use tower_http::cors::CorsLayer;
 use http::header::{CONTENT_TYPE};
 use tower_http::cors::Any;
 use http::Method;
-//use crate::web::recommendations; // Import the recommendations module
 
 use crate:: {
     users::Backend,
     web::{auth, protected, user, index, companies, vendor_deals, crowdsourcing, card},
 };
 
+// Define a type alias for the Diesel connection pool
+type DbPool = Pool<ConnectionManager<SqliteConnection>>;
+
 pub struct App {
     db: SqlitePool,
+    diesel_pool: DbPool, // Add Diesel pool to the struct
 }
 
 impl App {
 
     pub async fn new() -> Result<Self, Box<dyn std::error::Error>> {
+        // SQLx pool for session storage
         let db = SqlitePool::connect("database/rewards_maximizer.db").await?;
 
-        Ok(Self { db })
+        // Diesel connection pool for app queries
+        let database_url = "database/rewards_maximizer.db";
+        let manager = ConnectionManager::<SqliteConnection>::new(database_url);
+        let diesel_pool = Pool::builder()
+            .build(manager)
+            .expect("Failed to create Diesel connection pool");
+
+        Ok(Self { db, diesel_pool })
     }
 
     pub async fn serve(self) -> Result<(), Box<dyn std::error::Error>> {
-        // Session layer.
-        //
-        // This uses `tower-sessions` to establish a layer that will provide the session
-        // as a request extension.
+        // Session layer for SQLx sessions
         let session_store = SqliteStore::new(self.db.clone());
         session_store.migrate().await?;
 
@@ -51,7 +60,7 @@ impl App {
                 .continuously_delete_expired(tokio::time::Duration::from_secs(60)),
         );
 
-        // Generate a cryptographic key to sign the session cookie.
+        // Generate a cryptographic key to sign the session cookie
         let key = Key::generate();
 
         let session_layer = SessionManagerLayer::new(session_store)
@@ -59,11 +68,8 @@ impl App {
             .with_expiry(Expiry::OnInactivity(Duration::days(1)))
             .with_signed(key);
 
-        // Auth service.
-        //
-        // This combines the session layer with our backend to establish the auth
-        // service which will provide the auth session as a request extension.
-        let backend = Backend::new(self.db);
+        // Auth service setup
+        let backend = Backend::new(self.db.clone());
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         let cors = CorsLayer::new()
@@ -72,11 +78,8 @@ impl App {
             .allow_origin(Any)
             .allow_headers([CONTENT_TYPE]);
 
-        // Main router
-        //
-        // If you need to add a router from another mod
-        // use the merge function as shown below
-        let serve_dir = ServeDir::new("static");//.not_found_service(ServeDir::new("templates/404.html"));
+        // Main router setup
+        let serve_dir = ServeDir::new("static"); // Serve static files
         let app = protected::router()
             .route_layer(login_required!(Backend, login_url = "/login"))
             .merge(auth::router())
@@ -86,15 +89,16 @@ impl App {
             .merge(vendor_deals::router())
             .merge(crowdsourcing::router())
             .merge(card::router())
+            .layer(Extension(self.diesel_pool.clone())) // Provide Diesel pool to handlers
             .layer(MessagesManagerLayer)
             .layer(auth_layer)
             .layer(cors)
             .nest_service("/static", serve_dir.clone());
 
-        // If running locally change to "127.0.0.1:8080"
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap(); // localhost:8000
+        // Listen on 0.0.0.0:8080 (localhost:8080 for local testing)
+        let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
 
-        // Ensure we use a shutdown signal to abort the deletion task.
+        // Run the Axum server with a graceful shutdown signal
         axum::serve(listener, app.into_make_service())
             .with_graceful_shutdown(shutdown_signal(deletion_task.abort_handle()))
             .await?;
@@ -105,6 +109,7 @@ impl App {
     }
 }
 
+// Signal handler for graceful shutdown
 async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
     let ctrl_c = async {
         signal::ctrl_c()

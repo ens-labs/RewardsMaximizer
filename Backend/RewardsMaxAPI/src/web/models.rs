@@ -55,11 +55,11 @@ pub struct Card {
 pub struct NewCard {
     pub company_id: i32,
     pub name: String,
-    pub r#type: String,  // Rename to match your frontend field
+    pub r#type: String,
     pub icon: String,
     pub color: String,
-    pub created: String,  // Or use a Date type if necessary
-    pub updated: String,  // Or use a Date type if necessary
+    pub created: String, 
+    pub updated: String,
 }
 
 #[derive(QueryableByName, Serialize, Selectable)]

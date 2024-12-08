@@ -5,8 +5,8 @@ diesel::table! {
         created -> Text,
         name -> Text,
         r#type -> Text,
-        icon -> Text, // Add the icon field
-        color -> Text, // Add the color field
+        icon -> Text,
+        color -> Text,
         updated -> Text,
     }
 }
