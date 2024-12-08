@@ -13,32 +13,21 @@ export default class CardDetailsController extends Controller {
     this.loadCardDetails(); // Fetch card details when the controller is initialized
   }
 
-  // Fetch card details using the model's cardId
-  async loadCardDetails() {
+  loadCardDetails() {
     try {
-      const cardId = this.model.cardId;
-      const response = await fetch(`http://localhost:8080/cards/${cardId}`);
-
-      if (response.ok) {
-        const cardData = await response.json();
-        this.card = cardData;
-        this.rating = cardData.rating || 0; // Set the initial rating from the card data
-      } else {
-        console.error('Failed to fetch card details.');
-      }
+      this.card = this.model; // Use model data directly
+      this.rating = this.model.rating || 0; // Set initial rating
     } catch (error) {
-      console.error('Network error while fetching card details:', error);
+      console.error('Error setting card details:', error);
     }
   }
 
-  // Update the card's rating
   @action
   async setRating(newRating) {
     this.rating = newRating;
 
     try {
-      const cardId = this.model.cardId;
-      const response = await fetch(`http://localhost:8080/cards/${cardId}/rating`, {
+      const response = await fetch(`http://localhost:8080/cards/${this.card.cardId}/rating`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rating: this.rating }),
