@@ -61,7 +61,7 @@ export default class DropdownMenuComponent extends Component{
   // Possibly need to modify API call to logout
     @action
     async signOut(event) {
-    await fetch('http://localhost:8080/logout', {});
+    //await fetch('http://localhost:8080/logout', {});
     // End session storage
     sessionStorage.removeItem('username');
     this.navigateTo('login', event);
