@@ -22,7 +22,7 @@ use http::Method;
 
 use crate:: {
     users::Backend,
-    web::{auth, protected, user, index, companies, vendor_deals, crowdsourcing},
+    web::{auth, protected, user, index, companies, vendor_deals, crowdsourcing, card},
 };
 
 pub struct App {
@@ -85,7 +85,7 @@ impl App {
             .merge(companies::router())
             .merge(vendor_deals::router())
             .merge(crowdsourcing::router())
-            // .route("/recommendations/:user_id", axum::routing::get(recommendations::get_recommendations))
+            .merge(card::router())
             .layer(MessagesManagerLayer)
             .layer(auth_layer)
             .layer(cors)
