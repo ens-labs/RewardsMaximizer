@@ -6,7 +6,7 @@ export default class Results extends Controller {
     super(...arguments);
     this.username = sessionStorage.getItem('username');
     this.value = sessionStorage.getItem('value');
-    this.value = this.capitalize(this.value);
+    // this.value = this.capitalize(this.value);
     console.log(this.value);
     console.log(this.username);
     sessionStorage.setItem('username', this.username);
@@ -14,9 +14,9 @@ export default class Results extends Controller {
   }
 
   // Capitalize first letter in value
-  capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+  // capitalize(string) {
+  //   return string.charAt(0).toUpperCase() + string.slice(1);
+  // }
 
   async getRewards() {
     try {
