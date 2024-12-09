@@ -51,6 +51,12 @@ export default class DropdownMenuComponent extends Component{
       this.navigateTo('rewards', event);
   }
 
+  // Navigate to About us
+  @action
+    about(event) {
+        this.navigateTo('about', event);
+    }
+
   // Navigate to profile
   @action
   profile(event) {

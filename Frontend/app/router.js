@@ -18,4 +18,5 @@ Router.map(function () {
   this.route('profile');
   this.route('registration');
   this.route('rewards');
+  this.route('about');
 });
