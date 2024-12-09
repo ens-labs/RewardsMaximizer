@@ -39,33 +39,20 @@ export default class Crowdsourcing extends Controller {
       const response = await fetch(`http://localhost:8080/users/${this.username}`);
       const data = await response.json();
       this.user_data = data; 
-      console.log('Fetched user data:', this.user_data);
+
       // Search user data for matching username and assign user_id
       if (Array.isArray(this.user_data)) {
         const user = this.user_data.find(user => user.username === this.username);
         if (user) {
           this.user_id = user.user_id;
-          console.log('User ID:', this.user_id);
         } 
-      } 
-      else if (this.user_data.username === this.username) {
-        this.user_id = this.user_data.user_id;
-        console.log('User ID:', this.user_id);
       } 
     } 
     catch (error) {
       console.error('Error:', error);
     }
-
-    console.log('Feedback ID:', this.feedback_id);
-    console.log('User ID:', this.user_id);
-    console.log('Company ID:', this.companyID);
-    console.log('Rating:', this.rating);
-    console.log('Comment:', this.comment);
-    console.log('Created:', this.created);
-    console.log('Updated:', this.updated);
-
-    // Post recommendation
+    
+    // Post user feedback to database
     try {
       const response = await fetch('http://localhost:8080/crowdsourcing', {
         method: 'POST',
@@ -82,6 +69,7 @@ export default class Crowdsourcing extends Controller {
       });
 
       if (response.ok) {
+        alert('Recommendation submitted!');
         this.errorMessage = 'Recommendation submitted!';
       }
       else{
