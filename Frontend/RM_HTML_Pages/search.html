@@ -29,7 +29,7 @@
             <h4>Search Credit Cards</h4>
           </div>
           <div class="card-body">
-            <form>
+            <form id="searchForm">
               <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
                 <select id="category" class="form-select">
@@ -63,6 +63,13 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+      const category = document.getElementById("category").value;
+      const redirectUrl = `search_results.html?category=${encodeURIComponent(category)}`;
+      window.location.href = redirectUrl; // Redirect with query parameter
+    });
+  </script>
 </body>
 </html>

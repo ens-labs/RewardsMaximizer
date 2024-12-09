@@ -27,19 +27,12 @@
         <div class="card-list">
             <div class="page-card">
                 <h3>Product Category</h3>
-                <p>Grocries</p>
+                <p id="category-display"></p> <!-- Dynamically populated -->
             </div>
         </div>
         <h2>Your Best Rewards Matches</h2>
-        <div class="card-list">
-            <div class="page-card">
-                <h3>Chase Freedom Unlimited</h3>
-                <p>1.5% cash back on all purchases.</p>
-            </div>
-            <div class="page-card">
-                <h3>Amex Blue Cash Everyday</h3>
-                <p>3% cash back on groceries and gas.</p>
-            </div>
+        <div class="card-list" id="rewards-container">
+            <!-- Rewards will be added dynamically here -->
         </div>
     </section>
 
@@ -51,11 +44,61 @@
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-youtube"></i></a>
             <a href="#"><i class="fab fa-linkedin"></i></a>
-               </div>
+        </div>
         <div class="footer-links">
             <a href="#">Contact Us</a> | <a href="#">About Us</a>
         </div>
     </footer>
 
+    <!-- JavaScript Section -->
+    <script>
+        // Get the category parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        
+        // Display the selected category
+document.getElementById('category-display').textContent = category;
+
+        // Function to fetch rewards based on category
+        async function fetchRewards() {
+            try {
+                // API endpoint for backend (Correy replace this with the correct endpoint)
+                const response = await fetch(`http://localhost:8080/viewRewards?category=${category}`);
+                
+                // Check if the response is valid
+                if (!response.ok) {
+                    throw new Error('Failed to fetch rewards from the server.');
+                }
+
+                // Parse the JSON response
+                const rewards = await response.json();
+                
+                // Select the container to display results
+                const resultsContainer = document.getElementById('results-container');
+                resultsContainer.innerHTML = ''; // Clear any existing content
+
+                // If no rewards found, display a message
+                if (rewards.length === 0) {
+                    resultsContainer.innerHTML = '<p>No rewards found for this category.</p>';
+                } else {
+                    // Loop through the rewards and display them
+                    rewards.forEach(reward => {
+                        const card = document.createElement('div');
+                        card.classList.add('page-card');
+                        card.innerHTML = `
+                            <h3>${reward.name}</h3>
+                            <p>${reward.description}</p>
+                        `;
+                        resultsContainer.appendChild(card);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching rewards:', error);
+            }
+        }
+
+        // Call the function to fetch rewards
+        fetchRewards();
+    </script>
 </body>
 </html>
