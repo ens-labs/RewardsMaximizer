@@ -5,6 +5,7 @@ use crate::web::schema;
 
 #[derive(Clone, Serialize, Deserialize, Insertable, Queryable, Selectable, FromRow)]
 #[diesel(table_name = schema::users)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct User {
     pub user_id: i32,
     pub password: String,
@@ -85,16 +86,17 @@ pub struct NewCompany {
     pub website: String,
 }
 
-#[derive(Queryable, Selectable)]
+#[derive(Queryable, Insertable, Serialize, Deserialize, Clone, Debug)]
 #[diesel(table_name = schema::user_feedback)]
+// #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct UserFeedback {
     pub feedback_id: i32,
-    pub comments: String,
-    pub company_id: i32,
-    pub created: String,
-    pub rating: i32,
-    pub updated: String,
     pub user_id: i32,
+    pub company_id: i32,
+    pub rating: i32,
+    pub comments: String,
+    pub created: String,
+    pub updated: String,
 }
 
 #[derive(Queryable, Serialize)]
