@@ -1,12 +1,13 @@
-use axum::{routing::post, Router, Json, response::IntoResponse};
+use axum::{routing::{post, get}, Router, Json, response::IntoResponse, extract::Path};
 use diesel::{prelude::*};
-use crate::web::models::{NewUser};
+use crate::web::models::NewUser;
 use crate::web::lib::establish_connection;
 use password_auth::generate_hash;
 
 pub fn router() -> Router<()> {
     Router::new()
         .route("/signup", post(self::post::signup_user))
+        // .route("/users/:username", get(self::get::get_user_id))
 }
 
 mod post {
