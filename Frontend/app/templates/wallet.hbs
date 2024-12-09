@@ -16,12 +16,42 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
     <style>
-      /* Sticky Footer CSS */ html, body { height: 100%; margin: 0; display:
-      flex; flex-direction: column; } .container { flex-grow: 1; }
+      html, body { height: 100%; margin: 0; display: flex; flex-direction:
+      column; background-color: #f5f7fa; } .header { background-color: #343a40;
+      color: white; } .header-logo { font-size: 2rem; color: white; } .card-icon
+      { margin-left: 10px; color: white; } .container { flex-grow: 1; }
       .generic-card-icon { font-size: 3em; color: white; display: flex;
-      justify-content: center; align-items: center; height: 100px;
-      border-radius: 8px; } footer { background-color: #333; color: white;
-      padding: 1rem 0; text-align: center; }
+      justify-content: center; align-items: center; height: 100px; width: 100px;
+      border-radius: 50%; margin: 20px auto; } .wallet-card { border: 10px solid
+      transparent; border-radius: 15px; overflow: hidden; background: #ffffff;
+      text-align: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition:
+      transform 0.3s, box-shadow 0.3s; } .wallet-card:hover { transform:
+      translateY(-5px); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); border-color:
+      rgba(0, 0, 0, 0.2);} footer { background-color: #343a40; color: white;
+      padding: 1rem 0; text-align: center; } .footer-logo { font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center; }
+      .footer-links a { color: white; margin: 0 10px; text-decoration: none;
+      font-weight: bold; } .footer-links a:hover { text-decoration: underline; }
+      /* Button Styling */ .button { border: none; outline: none;
+      background-color: #212529; padding: 1rem 90px 1rem 2rem; position:
+      relative; width: 100%; /* Makes the button full-width within its container
+      */ max-width: 400px; /* Limits the button's width */ margin: 0 auto; /*
+      Centers the button horizontally */ display: block; /* Ensures the button
+      behaves as a block element */;border-radius: 20px; letter-spacing: 0.7px;
+      color: #fff; font-size: 21px; font-family: "Playfair Display", serif;
+      cursor: pointer; box-shadow: rgba(0, 9, 61, 0.2) 0px 4px 8px 0px;
+      overflow: hidden; } .button:hover { transform: translateY(-2px);
+      transition: transform 0.2s ease-in-out; } .button:active { transform:
+      translateY(1px); } .button__svg { position: absolute; overflow: visible;
+      bottom: 6px; right: 0.2rem; height: 140%; } .button__text span { display:
+      inline-block; transition: transform 0.2s ease-in-out; } .button:hover
+      .button__text span { transform: translateY(-0.25rem); } @media (hover:
+      hover) { #creditcard { transform: translateY(110px); transition: transform
+      0.1s ease-in-out; } #money { transform: translateY(180px); transition:
+      transform 0.1s ease-in-out; } .button:hover #creditcard { transform:
+      translateY(0px); transition: transform 0.2s ease-in-out; } .button:hover
+      #money { transform: translateY(0px); transition: transform 0.3s
+      ease-in-out; } }
     </style>
   </head>
 
@@ -29,19 +59,22 @@
     {{! Header }}
     <header class="header bg-dark text-white py-3">
       <div class="container d-flex justify-content-between align-items-center">
-        <h1 class="header-logo">
-          Rewards Maximizer
-          <i class="fas fa-credit-card card-icon"></i>
-        </h1>
+        <h1 class="header-logo">Rewards Maximizer
+          <i class="fas fa-credit-card card-icon"></i></h1>
         <nav class="navbar-links">
           <DropdownMenu />
         </nav>
       </div>
     </header>
 
-    {{! Main Content }}
+    <!-- Main Content -->
     <div class="container my-4">
-      <h2 class="text-center">Your Digital Wallet</h2>
+      <h1
+        class="text-center text-dark"
+        style="font-weight: bold; font-family: 'Playfair Display', serif;"
+      >
+        Your Digital Wallet
+      </h1>
       <div class="row mt-4">
         {{#each this.model as |card|}}
           <div class="col-md-4 mb-4">
@@ -50,34 +83,22 @@
               @model={{card.card_id}}
               class="text-decoration-none"
             >
-              <div class="card shadow-sm text-center">
+              <div class="wallet-card shadow-sm">
                 <div
                   class="generic-card-icon"
-                  style="background-color: {{if
-                    card.color
-                    card.color
-                    '#cccccc'
-                  }};"
+                  style="background-color: {{card.color}};"
                 >
                   <i class="fas {{category-icon card.category}}"></i>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">{{if
-                      card.name
-                      card.name
-                      "Unnamed Card"
-                    }}</h5>
-                  <p class="card-text">{{if
-                      card.type
-                      card.type
-                      "Unknown Type"
-                    }}</p>
+                  <h5 class="card-title">{{card.name}}</h5>
+                  <p class="card-text">{{card.benefits}}</p>
                   <button
                     class="btn btn-danger"
                     type="button"
                     {{on "click" (fn this.deleteCard card.card_id)}}
                   >
-                    Delete Card
+                    Delete
                   </button>
                 </div>
               </div>
@@ -86,16 +107,90 @@
         {{/each}}
       </div>
       <button
-        class="btn btn-dark mt-3 w-100"
+        class="button"
         data-bs-toggle="modal"
         data-bs-target="#addCardModal"
         type="button"
       >
-        Add New Card
+        <span class="button__text">
+          <span>A</span><span>d</span><span>d</span><span> </span><span
+          >N</span><span>e</span><span>w</span><span> </span><span>C</span><span
+          >a</span><span>r</span><span>d</span>
+        </span>
+        <svg class="button__svg" role="presentational" viewBox="0 0 600 600">
+          <defs>
+            <clipPath id="myClip">
+              <rect x="0" y="0" width="100%" height="50%" />
+            </clipPath>
+          </defs>
+          <g clip-path="url(#myClip)">
+            <g id="money">
+              <path
+                d="M441.9,116.54h-162c-4.66,0-8.49,4.34-8.62,9.83l.85,278.17,178.37,2V126.37C450.38,120.89,446.56,116.52,441.9,116.54Z"
+                fill="#699e64"
+                stroke="#323c44"
+                stroke-miterlimit="10"
+                stroke-width="14"
+              />
+              <path
+                d="M424.73,165.49c-10-2.53-17.38-12-17.68-24H316.44c-.09,11.58-7,21.53-16.62,23.94-3.24.92-5.54,4.29-5.62,8.21V376.54H430.1V173.71C430.15,169.83,427.93,166.43,424.73,165.49Z"
+                fill="#699e64"
+                stroke="#323c44"
+                stroke-miterlimit="10"
+                stroke-width="14"
+              />
+            </g>
+            <g id="creditcard">
+              <path
+                d="M372.12,181.59H210.9c-4.64,0-8.45,4.34-8.58,9.83l.85,278.17,177.49,2V191.42C380.55,185.94,376.75,181.57,372.12,181.59Z"
+                fill="#a76fe2"
+                stroke="#323c44"
+                stroke-miterlimit="10"
+                stroke-width="14"
+              />
+              <path
+                d="M347.55,261.85H332.22c-3.73,0-6.76-3.58-6.76-8v-35.2c0-4.42,3-8,6.76-8h15.33c3.73,0,6.76,3.58,6.76,8v35.2C354.31,258.27,351.28,261.85,347.55,261.85Z"
+                fill="#ffdc67"
+              />
+              <path d="M249.73,183.76h28.85v274.8H249.73Z" fill="#323c44" />
+            </g>
+          </g>
+          <g id="wallet">
+            <path
+              d="M478,288.23h-337A28.93,28.93,0,0,0,112,317.14V546.2a29,29,0,0,0,28.94,28.95H478a29,29,0,0,0,28.95-28.94h0v-229A29,29,0,0,0,478,288.23Z"
+              fill="#a4bdc1"
+              stroke="#323c44"
+              stroke-miterlimit="10"
+              stroke-width="14"
+            />
+            <path
+              d="M512.83,382.71H416.71a28.93,28.93,0,0,0-28.95,28.94h0V467.8a29,29,0,0,0,28.95,28.95h96.12a19.31,19.31,0,0,0,19.3-19.3V402a19.3,19.3,0,0,0-19.3-19.3Z"
+              fill="#a4bdc1"
+              stroke="#323c44"
+              stroke-miterlimit="10"
+              stroke-width="14"
+            />
+            <path
+              d="M451.46,435.79v7.88a14.48,14.48,0,1,1-29,0v-7.9a14.48,14.48,0,0,1,29,0Z"
+              fill="#a4bdc1"
+              stroke="#323c44"
+              stroke-miterlimit="10"
+              stroke-width="14"
+            />
+            <path
+              d="M147.87,541.93V320.84c-.05-13.2,8.25-21.51,21.62-24.27a42.71,42.71,0,0,1,7.14-1.32l-29.36-.63a67.77,67.77,0,0,0-9.13.45c-13.37,2.75-20.32,12.57-20.27,25.77l.38,221.24c-1.57,15.44,8.15,27.08,25.34,26.1l33-.19c-15.9,0-28.78-10.58-28.76-25.93Z"
+              fill="#7b8f91"
+            />
+            <path
+              d="M148.16,343.22a6,6,0,0,0-6,6v92a6,6,0,0,0,12,0v-92A6,6,0,0,0,148.16,343.22Z"
+              fill="#323c44"
+            />
+          </g>
+        </svg>
       </button>
     </div>
 
-    {{! Modal for Adding a New Card }}
+    <!-- Modal for Adding a New Card -->
     <div
       class="modal fade"
       id="addCardModal"
@@ -137,11 +232,11 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="category" class="form-label">Category</label>
+                <label for="cardCategory" class="form-label">Category</label>
                 <select
-                  id="category"
+                  id="cardCategory"
                   class="form-select"
-                  name="category"
+                  name="cardCategory"
                   required
                 >
                   <option value="travel">Travel</option>
@@ -154,33 +249,17 @@
                 </select>
               </div>
               <div class="mb-3">
-                <label for="iconChoice" class="form-label">Icon Choice</label>
-                <select
-                  id="iconChoice"
-                  class="form-select"
-                  name="iconChoice"
-                  required
-                >
-                  <option value="fa-credit-card">Credit Card</option>
-                  <option value="fa-shopping-cart">Shopping</option>
-                  <option value="fa-plane">Travel</option>
-                  <option value="fa-utensils">Dining</option>
-                </select>
-              </div>
-              <div class="mb-3">
                 <label for="cardColor" class="form-label">Card Color</label>
                 <input
                   type="color"
                   class="form-control form-control-color"
                   id="cardColor"
                   name="cardColor"
-                  value="#000000"
+                  value="#ffffff"
                   required
                 />
               </div>
-              <button type="submit" class="btn btn-primary w-100">
-                Add Card
-              </button>
+              <button type="submit" class="btn btn-primary w-100">Add Card</button>
             </form>
           </div>
         </div>
@@ -189,10 +268,8 @@
 
     {{! Footer }}
     <footer class="footer bg-dark text-white py-3 mt-auto">
-      <h5 class="footer-logo">
-        Rewards Maximizer
-        <i class="fas fa-credit-card card-icon"></i>
-      </h5>
+      <h5 class="footer-logo">Rewards Maximizer
+        <i class="fas fa-credit-card card-icon"></i></h5>
       <div class="social-icons">
         <a href="#"><i class="fab fa-twitter"></i></a>
         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -205,17 +282,17 @@
         <a href="/about">About Us</a>
       </div>
     </footer>
-
+    {{! Bootstrap for dropdown menu }}
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     ></script>
     {{! Initialize dropdown menu }}
     <script>
-      document.addEventListener('DOMContentLoaded', function () { var
-      dropdownElementList = [].slice.call(
-      document.querySelectorAll('.dropdown-toggle') ); var dropdownList =
-      dropdownElementList.map(function (dropdownToggleEl) { return new
-      bootstrap.Dropdown(dropdownToggleEl); }); });
+      document.addEventListener('DOMContentLoaded', function() { var
+      dropdownElementList =
+      [].slice.call(document.querySelectorAll('.dropdown-toggle')) var
+      dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+      return new bootstrap.Dropdown(dropdownToggleEl) }) });
     </script>
   </body>
 </html>
