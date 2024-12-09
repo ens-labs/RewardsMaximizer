@@ -11,7 +11,6 @@
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
-      rel="stylesheet"
     />
     <!-- Include Font Awesome for the stars -->
     <link
@@ -52,7 +51,7 @@
           '#cccccc'
         }}; font-size: 5em; height: 150px; width: 150px;"
       >
-        <i class="fas {{category-icon @model.category}}"></i>
+        <i class="fas {{category-icon this.model.category}}"></i>
       </div>
     </div>
 
@@ -69,31 +68,12 @@
 
       <!-- Star Rating Section -->
       <div class="d-flex justify-content-center mt-4">
-        <i
-          class="star fas fa-star"
-          id="star1"
-          {{on "click" (fn this.setRating 1)}}
-        ></i>
-        <i
-          class="star fas fa-star"
-          id="star2"
-          {{on "click" (fn this.setRating 2)}}
-        ></i>
-        <i
-          class="star fas fa-star"
-          id="star3"
-          {{on "click" (fn this.setRating 3)}}
-        ></i>
-        <i
-          class="star fas fa-star"
-          id="star4"
-          {{on "click" (fn this.setRating 4)}}
-        ></i>
-        <i
-          class="star fas fa-star"
-          id="star5"
-          {{on "click" (fn this.setRating 5)}}
-        ></i>
+        {{#each (array 1 2 3 4 5) as |starIndex|}}
+          <i
+            class="star fas fa-star {{if (gte this.rating starIndex) 'active'}}"
+            {{on "click" (fn this.setRating starIndex)}}
+          ></i>
+        {{/each}}
       </div>
 
       <!-- Display the rating -->
