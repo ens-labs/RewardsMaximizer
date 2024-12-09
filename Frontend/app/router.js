@@ -17,4 +17,5 @@ Router.map(function () {
   this.route('card-details', { path: '/card-details/:cardId' }); // Dynamic route for card details
   this.route('profile');
   this.route('registration');
+  this.route('rewards');
 });
