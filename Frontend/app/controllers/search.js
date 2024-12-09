@@ -13,10 +13,18 @@ export default class Search extends Controller {
     sessionStorage.setItem('username', this.username);
   }
 
+  // Set the category value for card search
+  @action
+  setValue(event) {
+    this.value = event.target.value;
+    console.log(this.value);
+  }
+
   // Future functionality for product search
   @action
   results(event) {
     event.preventDefault();
     this.router.transitionTo('search_results');
+    sessionStorage.setItem('value', this.value);
   }
 }
