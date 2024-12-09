@@ -61,22 +61,35 @@ export default class WalletController extends Controller {
   }
 
   @action
+  confirmDelete(cardId, event) {
+    // Stop the default behavior (e.g., navigation)
+    if (event) {
+      event.preventDefault(); // Prevent default behavior
+      event.stopPropagation(); // Stop further event propagation
+    }
+
+    // Show confirmation dialog
+    if (confirm("Are you sure you want to delete this card?")) {
+      this.deleteCard(cardId);
+    }
+  }
+
+  @action
   async deleteCard(cardId) {
     try {
       const response = await fetch(`http://localhost:8080/delete_card/${cardId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (response.ok) {
-        alert('Card deleted successfully!');
-        await this.updateCards(); // Refresh the card list
+        alert("Card deleted successfully!");
+        this.updateCards(); // Refresh card list after deletion
       } else {
-        const error = await response.text();
-        alert(`Error deleting card: ${error}`);
+        alert("Failed to delete the card. Please try again.");
       }
     } catch (error) {
-      console.error('Network error while deleting card:', error);
-      alert('An error occurred while deleting the card.');
+      console.error("Error deleting card:", error);
+      alert("An error occurred while deleting the card.");
     }
   }
 }

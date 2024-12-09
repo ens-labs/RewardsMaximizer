@@ -34,24 +34,21 @@
       font-weight: bold; } .footer-links a:hover { text-decoration: underline; }
       /* Button Styling */ .button { border: none; outline: none;
       background-color: #212529; padding: 1rem 90px 1rem 2rem; position:
-      relative; width: 100%; /* Makes the button full-width within its container
-      */ max-width: 400px; /* Limits the button's width */ margin: 0 auto; /*
-      Centers the button horizontally */ display: block; /* Ensures the button
-      behaves as a block element */;border-radius: 20px; letter-spacing: 0.7px;
-      color: #fff; font-size: 21px; font-family: "Playfair Display", serif;
-      cursor: pointer; box-shadow: rgba(0, 9, 61, 0.2) 0px 4px 8px 0px;
-      overflow: hidden; } .button:hover { transform: translateY(-2px);
-      transition: transform 0.2s ease-in-out; } .button:active { transform:
-      translateY(1px); } .button__svg { position: absolute; overflow: visible;
-      bottom: 6px; right: 0.2rem; height: 140%; } .button__text span { display:
-      inline-block; transition: transform 0.2s ease-in-out; } .button:hover
-      .button__text span { transform: translateY(-0.25rem); } @media (hover:
-      hover) { #creditcard { transform: translateY(110px); transition: transform
-      0.1s ease-in-out; } #money { transform: translateY(180px); transition:
-      transform 0.1s ease-in-out; } .button:hover #creditcard { transform:
-      translateY(0px); transition: transform 0.2s ease-in-out; } .button:hover
-      #money { transform: translateY(0px); transition: transform 0.3s
-      ease-in-out; } }
+      relative; width: 100%; max-width: 400px; margin: 0 auto; display: block;
+      border-radius: 20px; letter-spacing: 0.7px; color: #fff; font-size: 21px;
+      font-family: "Playfair Display", serif; cursor: pointer; box-shadow:
+      rgba(0, 9, 61, 0.2) 0px 4px 8px 0px; overflow: hidden; } .button:hover {
+      transform: translateY(-2px); transition: transform 0.2s ease-in-out; }
+      .button:active { transform: translateY(1px); } .button__svg { position:
+      absolute; overflow: visible; bottom: 6px; right: 0.2rem; height: 140%; }
+      .button__text span { display: inline-block; transition: transform 0.2s
+      ease-in-out; } .button:hover .button__text span { transform:
+      translateY(-0.25rem); } @media (hover: hover) { #creditcard { transform:
+      translateY(110px); transition: transform 0.1s ease-in-out; } #money {
+      transform: translateY(180px); transition: transform 0.1s ease-in-out; }
+      .button:hover #creditcard { transform: translateY(0px); transition:
+      transform 0.2s ease-in-out; } .button:hover #money { transform:
+      translateY(0px); transition: transform 0.3s ease-in-out; } }
     </style>
   </head>
 
@@ -96,7 +93,7 @@
                   <button
                     class="btn btn-danger"
                     type="button"
-                    {{on "click" (fn this.deleteCard card.card_id)}}
+                    {{on "click" (fn this.confirmDelete card.card_id)}}
                   >
                     Delete
                   </button>
@@ -288,11 +285,17 @@
     ></script>
     {{! Initialize dropdown menu }}
     <script>
-      document.addEventListener('DOMContentLoaded', function() { var
-      dropdownElementList =
-      [].slice.call(document.querySelectorAll('.dropdown-toggle')) var
-      dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-      return new bootstrap.Dropdown(dropdownToggleEl) }) });
+      function confirmDelete(cardId) { // Show a confirmation dialog const
+      userConfirmed = confirm("Are you sure you want to delete this card?"); //
+      If the user confirms, call the deleteCard function if (userConfirmed) {
+      deleteCard(cardId); } } function deleteCard(cardId) { // Make a request to
+      delete the card fetch(`http://localhost:8080/delete_card/${cardId}`, {
+      method: "DELETE", }) .then((response) => { if (response.ok) { alert("Card
+      deleted successfully!"); location.reload(); // Reload the page to update
+      the card list } else { alert("Failed to delete the card. Please try
+      again."); } }) .catch((error) => { console.error("Error deleting card:",
+      error); alert("An error occurred while deleting the card."); }); }
     </script>
+
   </body>
 </html>
