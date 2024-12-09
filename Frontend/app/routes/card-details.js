@@ -16,4 +16,11 @@ export default class CardDetailsRoute extends Route {
       return null;
     }
   }
+
+  setupController(controller, model) {
+    super.setupController(controller, model);
+    if (model) {
+      controller.loadCardDetails(); // Ensure card details are fetched when the model is ready
+    }
+  }
 }

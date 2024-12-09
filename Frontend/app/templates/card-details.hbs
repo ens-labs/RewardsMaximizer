@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{this.model.cardName}} - Rewards Maximizer</title>
+    <title>{{this.model.name}} - Rewards Maximizer</title>
 
     <!-- Include Bootstrap CSS -->
     <link
@@ -52,13 +52,7 @@
           '#cccccc'
         }}; font-size: 5em; height: 150px; width: 150px;"
       >
-        <i
-          class="{{if
-              this.model.icon
-              this.model.icon
-              'fas fa-question-circle'
-            }}"
-        ></i>
+        <i class="fas {{category-icon @model.category}}"></i>
       </div>
     </div>
 

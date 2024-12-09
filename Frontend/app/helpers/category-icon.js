@@ -1,16 +1,22 @@
-// helpers/category-icon.js
 import { helper } from '@ember/component/helper';
 
 export default helper(function categoryIcon([category]) {
-  const iconMap = {
-    travel: 'fa-plane',
-    shopping: 'fa-shopping-cart',
-    dining: 'fa-utensils',
-    'cash-back': 'fa-coins',
-    groceries: 'fa-apple-alt',
-    fuel: 'fa-gas-pump',
-    other: 'fa-question-circle',
-  };
-
-  return iconMap[category] || 'fa-question-circle';
+  switch (category?.toLowerCase()) {
+    case 'travel':
+      return 'fa-plane';
+    case 'shopping':
+      return 'fa-shopping-cart';
+    case 'dining':
+      return 'fa-utensils';
+    case 'cash-back':
+      return 'fa-money-bill-wave';
+    case 'groceries':
+      return 'fa-apple-alt';
+    case 'fuel':
+      return 'fa-gas-pump';
+    case 'other':
+      return 'fa-star'; // A fun icon for 'Other'
+    default:
+      return 'fa-question-circle'; // Default fallback
+  }
 });
