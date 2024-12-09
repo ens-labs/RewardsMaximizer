@@ -7,10 +7,7 @@ use crate::web::schema;
 #[diesel(table_name = schema::users)]
 pub struct User {
     pub user_id: i32,
-    //pub created: Option<String>,
-    //pub email: String,
     pub password: String,
-    //pub updated: String,
     pub username: String,
 }
 
@@ -89,17 +86,6 @@ pub struct NewCompany {
 }
 
 #[derive(Queryable, Selectable)]
-#[diesel(table_name = schema::rewards)]
-pub struct Reward {
-    pub reward_id: i32,
-    pub company_id: i32,
-    pub created: String,
-    pub description: String,
-    pub name: String,
-    pub updated: String,
-}
-
-#[derive(Queryable, Selectable)]
 #[diesel(table_name = schema::user_feedback)]
 pub struct UserFeedback {
     pub feedback_id: i32,
@@ -111,27 +97,42 @@ pub struct UserFeedback {
     pub user_id: i32,
 }
 
-#[derive(Queryable, Selectable)]
+#[derive(Queryable, Serialize)]
 #[diesel(table_name = schema::vendor_deals)]
 pub struct VendorDeal {
     pub deal_id: i32,
-    pub company_id: i32,
-    pub created: String,
-    pub description: String,
-    pub title: String,
-    pub updated: String,
-    pub valid_from: String,
-    pub valid_to: String,
+    pub company_id: Option<i32>,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub valid_from: Option<String>,
+    pub valid_to: Option<String>,
+    pub created: Option<String>,
+    pub updated: Option<String>,
 }
 
-#[derive(Queryable, Insertable, Serialize, Deserialize, Selectable)]
+
+#[derive(Queryable, Serialize, Deserialize)]
 #[diesel(table_name = schema::vendor_deals)]
 pub struct NewVendorDeal {
+    pub deal_id: i32,
+    pub company_id: Option<i32>,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub valid_from: Option<String>,
+    pub valid_to: Option<String>,
+    pub created: Option<String>,
+    pub updated: Option<String>,
+}
+
+#[derive(Queryable, Selectable, Serialize)]
+#[diesel(table_name = schema::rewards)]
+pub struct Rewards {
+    pub reward_id: i32,
     pub company_id: i32,
+    pub name: String,
     pub description: String,
-    pub title: String,
-    // pub valid_from: String,
-    // pub valid_to: String,
+    pub created: String,
+    pub updated: String,
 }
 
 #[derive(Queryable, Selectable)]

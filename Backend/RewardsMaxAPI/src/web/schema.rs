@@ -49,17 +49,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    rewards (reward_id) {
-        reward_id -> Nullable<Integer>,
-        company_id -> Integer,
-        created -> Nullable<Text>,
-        description -> Text,
-        name -> Text,
-        updated -> Text,
-    }
-}
-
-diesel::table! {
     user_feedback (feedback_id) {
         feedback_id -> Nullable<Integer>,
         comments -> Text,
@@ -73,14 +62,25 @@ diesel::table! {
 
 diesel::table! {
     vendor_deals (deal_id) {
-        deal_id -> Nullable<Integer>,
+        deal_id -> Integer,
         company_id -> Integer,
-        created -> Text,
-        description -> Text,
         title -> Text,
+        description -> Text,
+        valid_from -> Text,
+        valid_to -> Text,
+        created -> Text,
         updated -> Text,
-        valid_from -> Date,
-        valid_to -> Date,
+    }
+}
+
+diesel::table! {
+    rewards (reward_id) {
+        reward_id -> Integer,
+        company_id -> Integer,
+        name -> Text,
+        description -> Text,
+        created -> Text,
+        updated -> Text,
     }
 }
 

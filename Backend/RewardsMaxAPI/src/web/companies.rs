@@ -23,13 +23,11 @@ mod get {
         let mut connection = establish_connection();
 
 
-        
         let query1 = "SELECT * FROM companies";
         let query2 = match query {
             Some(search) => format!("{} WHERE name LIKE '%{}%'", query1, search),
             None => query1.to_string(),
         };
-
     
         let results = sql_query(query2).load::<Company>(&mut connection);
 

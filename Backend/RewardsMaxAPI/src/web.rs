@@ -12,6 +12,6 @@ pub mod models;
 pub mod schema;
 mod recommendations;
 mod companies;
-mod vendor_deals;
+pub mod vendor_deals;
 mod crowdsourcing;
 pub mod card;

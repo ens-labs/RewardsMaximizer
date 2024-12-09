@@ -37,9 +37,6 @@ pub fn router() -> Router<()> {
         .route("/login", post(self::post::login))
         .route("/login", get(self::get::login))
         .route("/logout", get(self::get::logout))
-        // .route("/signup", post(self::post::signup))
-        // .route("/signup", get(self::get::signup))
-
 }
 
 mod post {
@@ -73,39 +70,6 @@ mod post {
         let redirect_to = creds.next.as_deref().unwrap_or("/");
         Redirect::to(redirect_to).into_response()
     }
-
-
-
-//     pub async fn signup(
-//         mut auth_session: AuthSession,
-//         messages: Messages,
-//         Form(creds): Form<Credentials>,
-//     ) -> impl IntoResponse {
-//     // Check if the username is already taken
-//     // Insert diesel code to query existing usernames
-
-
-//     // Check if password is same as confirm password
-    
-
-
-//     // Create a new user and store it in the database
-//     // Insert diesel code to store in database
-
-//     // Log the user in after successful signup
-//     //if auth_session.login(&user).await.is_err() {
-//     //    return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-//     //}
-
-//     messages.success(format!("Successfully signed up as" /*user.username*/));
-
-//     if let Some(ref next) = creds.next {
-//         Redirect::to(next)
-//     } else {
-//         Redirect::to("/")
-//     }
-//     .into_response()
-//     }
 }
 
 mod get {
@@ -128,15 +92,5 @@ mod get {
         }
     }
 
-    // pub async fn signup(
-    //     messages: Messages,
-    //     Query(NextUrl { next }): Query<NextUrl>,
-    // ) -> SignupTemplate {
-    //     SignupTemplate {
-    //         messages: messages.into_iter().collect(),
-    //         next,
-    //     }
-    // }
-}
-    
+}    
 
