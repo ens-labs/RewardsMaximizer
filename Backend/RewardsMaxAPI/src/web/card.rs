@@ -1,5 +1,5 @@
 use axum::{
-    routing::{get, post, delete},
+    routing::{get, post, delete, put},
     Json, Router,
     extract::{Extension, Path},
     response::IntoResponse,
@@ -7,6 +7,7 @@ use axum::{
 };
 use diesel::prelude::*;
 use diesel::r2d2::{ConnectionManager, Pool};
+use serde_json::Value as JsonValue; // Import serde_json
 use crate::web::models::{NewCard, Card};
 use crate::web::schema::cards;
 
@@ -17,6 +18,7 @@ pub fn router() -> Router {
         .route("/add_card", post(add_card))
         .route("/cards", get(get_cards))
         .route("/card/:cardId", get(get_card_by_id))
+        .route("/card/:cardId/rating", put(update_card_rating)) // Add this route
         .route("/delete_card/:id", delete(delete_card))
 }
 
@@ -87,5 +89,38 @@ async fn delete_card(
             }
         }
         Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+    }
+}
+
+#[axum::debug_handler]
+async fn update_card_rating(
+    Path(card_id): Path<i32>, // Card ID from the path
+    Extension(pool): Extension<DbPool>, // Database pool
+    Json(payload): Json<JsonValue>, // Rating payload
+) -> Result<impl IntoResponse, StatusCode> {
+    // Extract the new rating from the payload
+    let new_rating = payload.get("rating")
+        .and_then(|r| r.as_i64())
+        .ok_or(StatusCode::BAD_REQUEST)? as i32;
+
+    let mut conn = pool.get().map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    // Update the rating in the database
+    match diesel::update(cards::table.filter(cards::card_id.eq(card_id)))
+        .set(cards::rating.eq(new_rating))
+        .execute(&mut conn)
+    {
+        Ok(affected_rows) if affected_rows > 0 => {
+            println!("Updated rating for card_id {}: {}", card_id, new_rating);
+            Ok(StatusCode::NO_CONTENT)
+        }
+        Ok(_) => {
+            eprintln!("Card ID {} not found.", card_id);
+            Err(StatusCode::NOT_FOUND)
+        }
+        Err(err) => {
+            eprintln!("Database error updating rating for card_id {}: {:?}", card_id, err);
+            Err(StatusCode::INTERNAL_SERVER_ERROR)
+        }
     }
 }
